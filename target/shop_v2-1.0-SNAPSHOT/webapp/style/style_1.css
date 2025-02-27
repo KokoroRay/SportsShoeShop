@@ -1,0 +1,253 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Oct 21, 2024, 10:12:37 AM
+    Author     : ADMIN
+*/
+
+.logo{
+    width: 200px; /* Chiều rộng hình ảnh */
+    height: auto; /* Chiều cao tự động để giữ tỉ lệ hình ảnh */
+}
+.mustbuy-container{
+    text-align: center;
+}
+.title-line{
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+.mustbuy-img{
+    width: 100%;
+}
+
+.mustbuy-img img{
+    max-width: 100%;
+}
+
+.mustbuy__image img{
+    width: 100%;  /* Hình ảnh sẽ chiếm 100% chiều rộng của container */
+    height: auto; /* Giữ tỷ lệ chiều cao theo chiều rộng */
+    max-width: 150px; /* Giới hạn kích thước tối đa cho hình ảnh */
+}
+
+.row img{
+    max-width: 100%;
+}
+
+.featured-products{
+    padding-top: 3%;
+}
+
+.footer{
+    margin-top: 3%;
+    text-align: center;
+}
+
+.footer {
+    background-color: #333;
+    color: #fff;
+    padding: 40px 0;
+    margin-top: 40px;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-section {
+    flex-basis: 25%;
+    margin-bottom: 20px;
+}
+
+.footer-section h3 {
+    color: #f4f4f9;
+    margin-bottom: 15px;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+.footer-section p, .footer-section ul, .footer-section a {
+    font-size: 14px;
+    color: #dcdcdc;
+}
+
+.footer-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+    color: #dcdcdc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: #ffa500;
+}
+
+.footer-section.contact p {
+    margin-bottom: 10px;
+}
+
+.footer-section.social a {
+    margin-right: 10px;
+}
+
+.footer-section.social a img {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+}
+
+.footer-section.social a:hover img {
+    transform: scale(1.1);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 20px 0;
+    background-color: #222;
+    color: #999;
+    font-size: 14px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+}
+
+.contact-info, .contact-form {
+    background-color: white;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    margin-bottom: 15px;
+}
+
+.contact-info p {
+    margin: 10px 0;
+}
+
+.contact-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+}
+.stars {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.star {
+    font-size: 2.5rem;
+    cursor: pointer;
+    color: #ccc;
+    transition: color 0.3s;
+}
+
+.star:hover,
+.star.selected {
+    color: #007bff;
+}
+
+textarea {
+    font-size: 1rem;
+    resize: none;
+}
+
+button {
+    font-size: 1.2rem;
+    background-color: #007bff;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#thankYouMessage {
+    animation: fadeIn 1s;
+}
+
+.hidden {
+    display: none;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
