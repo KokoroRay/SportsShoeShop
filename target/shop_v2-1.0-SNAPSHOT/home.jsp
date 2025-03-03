@@ -16,15 +16,60 @@
     // Fetch the list of products from the database
     ProductDAO productDAO = new ProductDAO();
     List<Product> productList = productDAO.getAllProducts();
+
+    List<Product> bestsellerList = productDAO.getBestsellerProducts();
 %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <title>Home Page</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="style/style.css"/>
+ <style>
+  /* Bestseller slider styles */
+  .bestseller-slider {
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+      height: 400px; /* Tăng chiều cao slider */
+      margin-bottom: 40px;
+  }
+  .slider-track {
+      display: flex;
+      width: calc(200%);
+      animation: scroll 20s linear infinite;
+  }
+/*  .slider-track:hover {
+      animation-play-state: paused;
+  }*/
+  .bestseller-card {
+      flex: 0 0 auto;
+      width: 300px;  /* Tăng chiều rộng card */
+      height: 400px; /* Tăng chiều cao card */
+      margin-right: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+  }
+  /* Đặt hình ảnh chiếm 3/4 chiều cao card (400px * 3/4 = 300px) */
+  .bestseller-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+  }
+  /* Phần thông tin (card-body) sẽ tự động chiếm phần còn lại (100px) */
+  @keyframes scroll {
+      0% {
+          transform: translateX(0);
+      }
+      100% {
+          transform: translateX(-50%);
+      }
+  }
+</style>
+
     </head>
     <body>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -125,9 +170,54 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
+        <!-- Banner phụ -->
         <div>
             <img src="asset/home.jpg" class="d-block w-100" alt="banner">
         </div>
+
+<!-- Phần Bestseller List: 5 sản phẩm bán chạy nhất -->
+<div class="container mt-5">
+<h3 class="text-center mb-4" style="color: red; font-weight: bold; font-size: 2rem;">Bestseller</h3>
+    <div class="bestseller-slider">
+        <!-- Nếu không cần nút điều khiển, bạn có thể xóa chúng -->
+        <div class="slider-track">
+            <% if (bestsellerList != null && !bestsellerList.isEmpty()) { 
+                   // Lặp qua danh sách bestseller lần thứ nhất
+                   for (Product p : bestsellerList) { %>
+            <a href="product_detail.jsp?productId=<%= p.getProduct_ID() %>" class="text-decoration-none">
+                <div class="card bestseller-card">
+                    <img src="<%= p.getImage() %>" class="card-img-top" alt="<%= p.getProduct_Name() %>">
+                    <div class="card-body p-2">
+                        <h6 class="card-title text-center" style="font-size: 16px;"><%= p.getProduct_Name() %></h6>
+                        <p class="card-text text-center" style="font-size: 18px; font-weight: bold; color: red;">
+                            $<%= p.getPrice() %>
+                        </p>
+                    </div>
+                </div>
+            </a>
+            <%   } 
+                   // Lặp lại danh sách để tạo hiệu ứng cuộn liên tục
+                   for (Product p : bestsellerList) { %>
+            <a href="product_detail.jsp?productId=<%= p.getProduct_ID() %>" class="text-decoration-none">
+                <div class="card bestseller-card">
+                    <img src="<%= p.getImage() %>" class="card-img-top" alt="<%= p.getProduct_Name() %>">
+                    <div class="card-body p-2">
+                        <h6 class="card-title text-center" style="font-size: 16px;"><%= p.getProduct_Name() %></h6>
+                        <p class="card-text text-center" style="font-size: 18px; font-weight: bold; color: red;">
+                            $<%= p.getPrice() %>
+                        </p>
+                    </div>
+                </div>
+            </a>
+            <%   } 
+                } else { %>
+            <div class="col-12">
+                <div class="alert alert-info text-center">No bestseller products found.</div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+</div>
 
 
         <div class="footer">
@@ -154,9 +244,9 @@
                     <!-- Liên hệ -->
                     <div class="footer-section contact">
                         <h3>Contact</h3>
-                        <p>Address: SE1812, FPT University</p>
+                        <p>Address: SE1817, FPT University</p>
                         <p>Phone number: 123456789 </p>
-                        <p>Email: shopshoegroup5@gmail.com</p>
+                        <p>Email: shopshoegroup7@gmail.com</p>
                     </div>
 
                     <!-- Theo dõi chúng tôi -->
@@ -172,6 +262,25 @@
                 </div>
             </footer>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script>
+            $(window).on('load', function () {
+                var $sliderTrack = $('.slider-track');
+                var trackWidth = $sliderTrack.width(); // sau khi hình ảnh đã load
+                var currentPos = 0;
+                var step = 1;
+                var intervalTime = 20;
+
+                setInterval(function () {
+                    currentPos -= step;
+                    if (Math.abs(currentPos) >= trackWidth / 2) {
+                        currentPos = 0;
+                    }
+                    $sliderTrack.css('transform', 'translateX(' + currentPos + 'px)');
+                }, intervalTime);
+            });
+        </script>
+
     </body>
 </html>
