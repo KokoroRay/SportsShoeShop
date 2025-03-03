@@ -47,38 +47,36 @@ public class ProductDAO {
         return products;
     }
 
-    public Product getProductById(String productId) {
-        Product product = null;
-        String query = "SELECT * FROM products WHERE Product_ID = ?";
+public Product getProductById(String productId) {
+    Product product = null;
+    String query = "SELECT * FROM Products WHERE Product_ID = ?";
+    DBContext context = new DBContext();
+    try (Connection conn = context.getConnection();
+         PreparedStatement ps = conn.prepareStatement(query)) {
 
-        DBContext context = new DBContext();
-        try ( Connection conn = context.getConnection(); // Giả sử bạn có lớp Database quản lý kết nối
-                  PreparedStatement ps = conn.prepareStatement(query)) {
+         // Sửa ở đây: chuyển đổi productId sang int
+         ps.setInt(1, Integer.parseInt(productId));
 
-            ps.setString(1, productId);  // Thiết lập giá trị cho tham số đầu vào
-
-            try ( ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    // Lấy dữ liệu từ ResultSet và khởi tạo đối tượng Product
-                    product = new Product();
-                    product.setProduct_ID(rs.getInt("Product_ID"));
-                    product.setProduct_Name(rs.getString("Product_Name"));
-                    product.setDescription(rs.getString("Description"));
-                    product.setPrice(rs.getDouble("Price"));
-                    product.setImage(rs.getString("Image"));
-                    product.setBrand(rs.getString("Brand"));
-                    product.setSize(rs.getString("Size"));
-                    product.setQuantity(rs.getInt("Quantity"));
-                    product.setRate(rs.getDouble("Rate"));
-                    // Thêm các thuộc tính khác nếu có
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return product;  // Trả về đối tượng Product hoặc null nếu không tìm thấy
+         try (ResultSet rs = ps.executeQuery()) {
+             if (rs.next()) {
+                 product = new Product();
+                 product.setProduct_ID(rs.getInt("Product_ID"));
+                 product.setProduct_Name(rs.getString("Product_Name"));
+                 product.setDescription(rs.getString("Description"));
+                 product.setPrice(rs.getDouble("Price"));
+                 product.setImage(rs.getString("Image"));
+                 product.setBrand(rs.getString("Brand"));
+                 product.setSize(rs.getString("Size"));
+                 product.setQuantity(rs.getInt("Quantity"));
+                 product.setRate(rs.getDouble("Rate"));
+                 // Các thuộc tính khác nếu cần
+             }
+         }
+    } catch (SQLException e) {
+         e.printStackTrace();
     }
+    return product;
+}
 
     public List<Product> getProductsByBrand(String brand) {
         List<Product> products = new ArrayList<>();
@@ -176,53 +174,83 @@ public class ProductDAO {
         return products;  // Trả về danh sách sản phẩm có tên phù hợp
     }
 
-public int getProductsCount() {
-    int count = 0;
-    String sql = "SELECT COUNT(*) FROM Products";
-    DBContext context = new DBContext();
-    try (Connection conn = context.getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql);
-         ResultSet rs = ps.executeQuery()) {
-         if (rs.next()) {
-             count = rs.getInt(1);
-         }
-    } catch (SQLException e) {
-         e.printStackTrace();
+    public int getProductsCount() {
+        int count = 0;
+        String sql = "SELECT TOP 10 P.Product_ID, P.Product_Name, P.Brand, P.Type, SUM(OI.Quantity) AS Total_Sold\n"
+                + "FROM Order_Items OI\n"
+                + "JOIN Products P ON OI.Product_ID = P.Product_ID\n"
+                + "GROUP BY P.Product_ID, P.Product_Name, P.Brand, P.Type\n"
+                + "ORDER BY Total_Sold DESC;\n"
+                + "\n"
+                + "";
+        DBContext context = new DBContext();
+        try ( Connection conn = context.getConnection();  PreparedStatement ps = conn.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
     }
-    return count;
-}
 
-public List<Product> getProducts(int offset, int limit) {
-    List<Product> products = new ArrayList<>();
-    // SQL Server yêu cầu mệnh đề ORDER BY khi sử dụng OFFSET FETCH.
-    String sql = "SELECT * FROM Products ORDER BY Product_ID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-    DBContext context = new DBContext();
-    try (Connection conn = context.getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-         ps.setInt(1, offset);
-         ps.setInt(2, limit);
-         try (ResultSet rs = ps.executeQuery()) {
-             while (rs.next()) {
-                 Product p = new Product(
-                     rs.getInt("Product_ID"),
-                     rs.getString("Brand"),
-                     rs.getString("Product_Name"),
-                     rs.getDouble("Price"),
-                     rs.getInt("Quantity"),
-                     rs.getString("Size"),
-                     rs.getString("Description"),
-                     rs.getString("Image"),
-                     rs.getDouble("Rate"),
-                     rs.getString("Type")
-                 );
-                 products.add(p);
-             }
-         }
-    } catch (SQLException e) {
-         e.printStackTrace();
+    public List<Product> getProducts(int offset, int limit) {
+        List<Product> products = new ArrayList<>();
+        // SQL Server yêu cầu mệnh đề ORDER BY khi sử dụng OFFSET FETCH.
+        String sql = "SELECT * FROM Products ORDER BY Product_ID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        DBContext context = new DBContext();
+        try ( Connection conn = context.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, offset);
+            ps.setInt(2, limit);
+            try ( ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Product p = new Product(
+                            rs.getInt("Product_ID"),
+                            rs.getString("Brand"),
+                            rs.getString("Product_Name"),
+                            rs.getDouble("Price"),
+                            rs.getInt("Quantity"),
+                            rs.getString("Size"),
+                            rs.getString("Description"),
+                            rs.getString("Image"),
+                            rs.getDouble("Rate"),
+                            rs.getString("Type")
+                    );
+                    products.add(p);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
     }
-    return products;
-}
+
+    public List<Product> getBestsellerProducts() {
+        List<Product> products = new ArrayList<>();
+        // Giả sử tiêu chí bán chạy là Rate cao nhất. Bạn có thể thay đổi truy vấn theo cột Sales nếu có.
+        String sql = "SELECT TOP 10 * FROM Products ORDER BY Rate DESC";
+        DBContext context = new DBContext();
+        try ( Connection conn = context.getConnection();  PreparedStatement ps = conn.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Product p = new Product(
+                        rs.getInt("Product_ID"),
+                        rs.getString("Brand"),
+                        rs.getString("Product_Name"),
+                        rs.getDouble("Price"),
+                        rs.getInt("Quantity"),
+                        rs.getString("Size"),
+                        rs.getString("Description"),
+                        rs.getString("Image"),
+                        rs.getDouble("Rate"),
+                        rs.getString("Type")
+                );
+                products.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
 
     public boolean insertProduct(Product product) {
         String query = "INSERT INTO Products (Brand, Product_Name, Price, Quantity, Size, Description, Image, Rate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
