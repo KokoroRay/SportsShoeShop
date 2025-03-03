@@ -175,7 +175,56 @@ public class ProductDAO {
 
         return products;  // Trả về danh sách sản phẩm có tên phù hợp
     }
-     public boolean insertProduct(Product product) {
+
+public int getProductsCount() {
+    int count = 0;
+    String sql = "SELECT COUNT(*) FROM Products";
+    DBContext context = new DBContext();
+    try (Connection conn = context.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+         if (rs.next()) {
+             count = rs.getInt(1);
+         }
+    } catch (SQLException e) {
+         e.printStackTrace();
+    }
+    return count;
+}
+
+public List<Product> getProducts(int offset, int limit) {
+    List<Product> products = new ArrayList<>();
+    // SQL Server yêu cầu mệnh đề ORDER BY khi sử dụng OFFSET FETCH.
+    String sql = "SELECT * FROM Products ORDER BY Product_ID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+    DBContext context = new DBContext();
+    try (Connection conn = context.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+         ps.setInt(1, offset);
+         ps.setInt(2, limit);
+         try (ResultSet rs = ps.executeQuery()) {
+             while (rs.next()) {
+                 Product p = new Product(
+                     rs.getInt("Product_ID"),
+                     rs.getString("Brand"),
+                     rs.getString("Product_Name"),
+                     rs.getDouble("Price"),
+                     rs.getInt("Quantity"),
+                     rs.getString("Size"),
+                     rs.getString("Description"),
+                     rs.getString("Image"),
+                     rs.getDouble("Rate"),
+                     rs.getString("Type")
+                 );
+                 products.add(p);
+             }
+         }
+    } catch (SQLException e) {
+         e.printStackTrace();
+    }
+    return products;
+}
+
+    public boolean insertProduct(Product product) {
         String query = "INSERT INTO Products (Brand, Product_Name, Price, Quantity, Size, Description, Image, Rate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         DBContext context = new DBContext();
         try ( Connection conn = context.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
@@ -232,17 +281,18 @@ public class ProductDAO {
             return false;
         }
     }
-public void rateProduct(int productId, int rating) {
-    String query = "UPDATE Products SET Rate = ? WHERE Product_ID = ?";
-    DBContext context = new DBContext();
+
+    public void rateProduct(int productId, int rating) {
+        String query = "UPDATE Products SET Rate = ? WHERE Product_ID = ?";
+        DBContext context = new DBContext();
         try ( Connection conn = context.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
 
-        ps.setInt(1, rating);
-        ps.setInt(2, productId);
-        ps.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
+            ps.setInt(1, rating);
+            ps.setInt(2, productId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-}
 
 }
