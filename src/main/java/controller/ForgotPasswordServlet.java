@@ -30,7 +30,7 @@ public class ForgotPasswordServlet extends HttpServlet {
                 request.setAttribute("errorMessage", "Email not found. Please try again.");
                 request.getRequestDispatcher("forgot-password.jsp").forward(request, response);
                 return;
-            }
+            } 
 
             // Lấy tên người dùng từ đối tượng User
             String username = user.getUserName();
