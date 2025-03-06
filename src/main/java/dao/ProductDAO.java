@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Product;
+import java.util.Arrays;
+
 
 /**
  *
@@ -47,36 +49,35 @@ public class ProductDAO {
         return products;
     }
 
-public Product getProductById(String productId) {
-    Product product = null;
-    String query = "SELECT * FROM Products WHERE Product_ID = ?";
-    DBContext context = new DBContext();
-    try (Connection conn = context.getConnection();
-         PreparedStatement ps = conn.prepareStatement(query)) {
+    public Product getProductById(String productId) {
+        Product product = null;
+        String query = "SELECT * FROM Products WHERE Product_ID = ?";
+        DBContext context = new DBContext();
+        try ( Connection conn = context.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
 
-         // Sửa ở đây: chuyển đổi productId sang int
-         ps.setInt(1, Integer.parseInt(productId));
+            // Sửa ở đây: chuyển đổi productId sang int
+            ps.setInt(1, Integer.parseInt(productId));
 
-         try (ResultSet rs = ps.executeQuery()) {
-             if (rs.next()) {
-                 product = new Product();
-                 product.setProduct_ID(rs.getInt("Product_ID"));
-                 product.setProduct_Name(rs.getString("Product_Name"));
-                 product.setDescription(rs.getString("Description"));
-                 product.setPrice(rs.getDouble("Price"));
-                 product.setImage(rs.getString("Image"));
-                 product.setBrand(rs.getString("Brand"));
-                 product.setSize(rs.getString("Size"));
-                 product.setQuantity(rs.getInt("Quantity"));
-                 product.setRate(rs.getDouble("Rate"));
-                 // Các thuộc tính khác nếu cần
-             }
-         }
-    } catch (SQLException e) {
-         e.printStackTrace();
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    product = new Product();
+                    product.setProduct_ID(rs.getInt("Product_ID"));
+                    product.setProduct_Name(rs.getString("Product_Name"));
+                    product.setDescription(rs.getString("Description"));
+                    product.setPrice(rs.getDouble("Price"));
+                    product.setImage(rs.getString("Image"));
+                    product.setBrand(rs.getString("Brand"));
+                    product.setSize(rs.getString("Size"));
+                    product.setQuantity(rs.getInt("Quantity"));
+                    product.setRate(rs.getDouble("Rate"));
+                    // Các thuộc tính khác nếu cần
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return product;
     }
-    return product;
-}
 
     public List<Product> getProductsByBrand(String brand) {
         List<Product> products = new ArrayList<>();
@@ -251,6 +252,121 @@ public Product getProductById(String productId) {
         }
         return products;
     }
+
+     public List<Product> getRelatedProducts(int categoryId, int productId) {
+        List<Product> relatedProducts = new ArrayList<>();
+        String query = "SELECT * FROM Products WHERE Type = (SELECT Type FROM Products WHERE Product_ID = ?) " +
+                       "AND Product_ID != ? LIMIT 4";
+        DBContext context = new DBContext();
+        try (Connection conn = context.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, productId);
+            stmt.setInt(2, productId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Product p = new Product(
+                        rs.getInt("Product_ID"),
+                        rs.getString("Brand"),
+                        rs.getString("Product_Name"),
+                        rs.getDouble("Price"),
+                        rs.getInt("Quantity"),
+                        rs.getString("Size"),
+                        rs.getString("Description"),
+                        rs.getString("Image"),
+                        rs.getDouble("Rate"),
+                        rs.getString("Type"));
+                relatedProducts.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return relatedProducts;
+    }
+
+    public List<Product> getBestSellingProducts() {
+        List<Product> bestSellers = new ArrayList<>();
+        String query = "SELECT p.* FROM Products p " +
+                       "JOIN Order_Items oi ON p.Product_ID = oi.Product_ID " +
+                       "GROUP BY p.Product_ID " +
+                       "ORDER BY SUM(oi.Quantity) DESC LIMIT 4";
+        DBContext context = new DBContext();
+        try (Connection conn = context.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Product p = new Product(
+                        rs.getInt("Product_ID"),
+                        rs.getString("Brand"),
+                        rs.getString("Product_Name"),
+                        rs.getDouble("Price"),
+                        rs.getInt("Quantity"),
+                        rs.getString("Size"),
+                        rs.getString("Description"),
+                        rs.getString("Image"),
+                        rs.getDouble("Rate"),
+                        rs.getString("Type"));
+                bestSellers.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bestSellers;
+    }
+
+    public List<Product> getProductsByBrand(String brand, int productId) {
+        List<Product> brandProducts = new ArrayList<>();
+        String query = "SELECT * FROM Products WHERE Brand = ? AND Product_ID != ? LIMIT 4";
+        DBContext context = new DBContext();
+        try (Connection conn = context.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, brand);
+            stmt.setInt(2, productId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Product p = new Product(
+                        rs.getInt("Product_ID"),
+                        rs.getString("Brand"),
+                        rs.getString("Product_Name"),
+                        rs.getDouble("Price"),
+                        rs.getInt("Quantity"),
+                        rs.getString("Size"),
+                        rs.getString("Description"),
+                        rs.getString("Image"),
+                        rs.getDouble("Rate"),
+                        rs.getString("Type"));
+                brandProducts.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return brandProducts;
+    }
+    
+public List<String> getSizesByProductId(int productId) {
+    List<String> sizes = new ArrayList<>();
+    String query = "SELECT Size FROM Products where Product_ID = ?";
+    DBContext context = new DBContext();
+
+    try (Connection conn = context.getConnection();
+         PreparedStatement ps = conn.prepareStatement(query)) {
+        ps.setInt(1, productId);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                String sizeString = rs.getString("Size");
+                if (sizeString != null && !sizeString.isEmpty()) {
+                    String[] sizeArray = sizeString.split(",\\s*"); // Tách size dựa vào dấu `,`
+                    sizes.addAll(Arrays.asList(sizeArray));
+                }
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return sizes;
+}
+
+
 
     public boolean insertProduct(Product product) {
         String query = "INSERT INTO Products (Brand, Product_Name, Price, Quantity, Size, Description, Image, Rate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";

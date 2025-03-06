@@ -13,6 +13,7 @@ controller\DetailController.class
 controller\ResetPasswordServlet.class
 controller\EditUserServlet.class
 model\Product.class
+controller\UpdateCartServlet.class
 utils\PasswordUtils.class
 controller\UpdateProfileServlet.class
 dao\UserDAO.class

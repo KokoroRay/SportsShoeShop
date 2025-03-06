@@ -18,8 +18,8 @@ public class EmailUtil {
         properties.put("mail.smtp.starttls.enable", "true");
 
         // Tài khoản email của bạn (sử dụng để gửi email)
-        final String fromEmail = "shopshoegroup5@gmail.com";
-        final String password = "tjvfwqjygkvihvzi";  // Bạn nên cẩn thận với thông tin này
+        final String fromEmail = "kokororay356@gmail.com";
+        final String password = "siijsjswwwksvcqb";  // Bạn nên cẩn thận với thông tin này
 
         // Tạo session để gửi email
         Session session = Session.getInstance(properties, new Authenticator() {

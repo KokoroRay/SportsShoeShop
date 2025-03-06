@@ -17,63 +17,67 @@ public class CheckoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Lấy giỏ hàng và người dùng từ session
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
 
         if (user == null || cart == null || cart.isEmpty()) {
-            // Nếu chưa đăng nhập hoặc giỏ hàng trống, chuyển hướng về trang giỏ hàng
             response.sendRedirect("viewcart.jsp");
             return;
         }
 
-        // Tính tổng giá trị đơn hàng
+        // Lấy thông tin địa chỉ và phương thức thanh toán
+        String fullName = request.getParameter("fullName");
+        String phoneNumber = request.getParameter("phoneNumber");
+        String address = request.getParameter("address");
+        String paymentMethod = request.getParameter("paymentMethod");
+
         double total = 0;
         for (CartItem item : cart) {
             total += item.getTotalPrice();
         }
 
-        // Lưu đơn hàng vào cơ sở dữ liệu
         OrderDAO orderDAO = new OrderDAO();
         boolean orderSaved = orderDAO.saveOrder(user, cart, total);
 
         if (orderSaved) {
-            // Nếu đặt hàng thành công, xóa giỏ hàng khỏi session
             session.removeAttribute("cart");
 
             // Gửi email xác nhận
             String toEmail = user.getEmail();
-            String subject = "Order confirmation from Group 4 Shop";
-            String messageContent = buildOrderConfirmationMessage(user, cart, total);
+            String subject = "Order Confirmation - Group 7 Shop";
+            String messageContent = buildOrderConfirmationMessage(user, fullName, phoneNumber, address, paymentMethod, cart, total);
             EmailUtil.sendEmail(toEmail, subject, messageContent);
 
-            // Chuyển hướng đến trang xác nhận đơn hàng
             response.sendRedirect("order-confirmation.jsp");
         } else {
             response.sendRedirect("viewcart.jsp?error=payment_failed");
         }
     }
 
-    // Hàm tạo nội dung email xác nhận đơn hàng
-    private String buildOrderConfirmationMessage(User user, List<CartItem> cart, double total) {
+    private String buildOrderConfirmationMessage(User user, String fullName, String phoneNumber, String address, String paymentMethod, List<CartItem> cart, double total) {
         StringBuilder message = new StringBuilder();
-        message.append("Hello!, ").append(user.getUserName()).append("\n\n");
-        message.append("Thank you for purchasing at our shop.\n");
-        message.append("Here are your order details:\n\n");
-
-        message.append("Product:\n");
+        message.append("Hello ").append(fullName).append(",\n\n");
+        message.append("Thank you for your order! Here are your order details:\n\n");
+        
+        message.append("Shipping Information:\n");
+        message.append("- Name: ").append(fullName).append("\n");
+        message.append("- Phone: ").append(phoneNumber).append("\n");
+        message.append("- Address: ").append(address).append("\n");
+        message.append("- Payment Method: ").append(paymentMethod).append("\n\n");
+        
+        message.append("Order Details:\n");
         for (CartItem item : cart) {
             message.append("- ").append(item.getProduct_Name())
                    .append(" (Size: ").append(item.getSize())
                    .append(", Quantity: ").append(item.getQuantity())
                    .append("): $").append(item.getTotalPrice()).append("\n");
         }
-
-        message.append("\nTotal: $").append(total).append("\n");
-        message.append("Your order will be processed as soon as possible.\n");
-        message.append("Thank you again for shopping at our shop!");
-
+        
+        message.append("\nTotal Amount: $").append(total).append("\n\n");
+        message.append("Your order will be processed and shipped soon.\n");
+        message.append("Thank you for shopping with us!\n");
+        
         return message.toString();
     }
 }

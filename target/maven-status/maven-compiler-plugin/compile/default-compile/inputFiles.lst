@@ -11,6 +11,7 @@ D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\DeleteUserServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\DeleteProductServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\EditProductServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\UpdateProfileServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\UpdateCartServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\model\CartItem.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\UpdateOrderStatusServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\CheckoutServlet.java
