@@ -14,7 +14,6 @@ import java.util.List;
 import model.Product;
 import java.util.Arrays;
 
-
 /**
  *
  * @author ADMIN
@@ -253,13 +252,12 @@ public class ProductDAO {
         return products;
     }
 
-     public List<Product> getRelatedProducts(int categoryId, int productId) {
+    public List<Product> getRelatedProducts(int categoryId, int productId) {
         List<Product> relatedProducts = new ArrayList<>();
-        String query = "SELECT * FROM Products WHERE Type = (SELECT Type FROM Products WHERE Product_ID = ?) " +
-                       "AND Product_ID != ? LIMIT 4";
+        String query = "SELECT * FROM Products WHERE Type = (SELECT Type FROM Products WHERE Product_ID = ?) "
+                + "AND Product_ID != ? LIMIT 4";
         DBContext context = new DBContext();
-        try (Connection conn = context.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try ( Connection conn = context.getConnection();  PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, productId);
             stmt.setInt(2, productId);
             ResultSet rs = stmt.executeQuery();
@@ -285,13 +283,12 @@ public class ProductDAO {
 
     public List<Product> getBestSellingProducts() {
         List<Product> bestSellers = new ArrayList<>();
-        String query = "SELECT p.* FROM Products p " +
-                       "JOIN Order_Items oi ON p.Product_ID = oi.Product_ID " +
-                       "GROUP BY p.Product_ID " +
-                       "ORDER BY SUM(oi.Quantity) DESC LIMIT 4";
+        String query = "SELECT p.* FROM Products p "
+                + "JOIN Order_Items oi ON p.Product_ID = oi.Product_ID "
+                + "GROUP BY p.Product_ID "
+                + "ORDER BY SUM(oi.Quantity) DESC LIMIT 4";
         DBContext context = new DBContext();
-        try (Connection conn = context.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try ( Connection conn = context.getConnection();  PreparedStatement stmt = conn.prepareStatement(query)) {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Product p = new Product(
@@ -317,8 +314,7 @@ public class ProductDAO {
         List<Product> brandProducts = new ArrayList<>();
         String query = "SELECT * FROM Products WHERE Brand = ? AND Product_ID != ? LIMIT 4";
         DBContext context = new DBContext();
-        try (Connection conn = context.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try ( Connection conn = context.getConnection();  PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, brand);
             stmt.setInt(2, productId);
             ResultSet rs = stmt.executeQuery();
@@ -341,32 +337,61 @@ public class ProductDAO {
         }
         return brandProducts;
     }
-    
-public List<String> getSizesByProductId(int productId) {
-    List<String> sizes = new ArrayList<>();
-    String query = "SELECT Size FROM Products where Product_ID = ?";
-    DBContext context = new DBContext();
 
-    try (Connection conn = context.getConnection();
-         PreparedStatement ps = conn.prepareStatement(query)) {
-        ps.setInt(1, productId);
+    public List<String> getSizesByProductId(int productId) {
+        List<String> sizes = new ArrayList<>();
+        String query = "SELECT Size FROM Products where Product_ID = ?";
+        DBContext context = new DBContext();
 
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                String sizeString = rs.getString("Size");
-                if (sizeString != null && !sizeString.isEmpty()) {
-                    String[] sizeArray = sizeString.split(",\\s*"); // Tách size dựa vào dấu `,`
-                    sizes.addAll(Arrays.asList(sizeArray));
+        try ( Connection conn = context.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, productId);
+
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String sizeString = rs.getString("Size");
+                    if (sizeString != null && !sizeString.isEmpty()) {
+                        String[] sizeArray = sizeString.split(",\\s*"); // Tách size dựa vào dấu `,`
+                        sizes.addAll(Arrays.asList(sizeArray));
+                    }
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return sizes;
     }
-    return sizes;
-}
 
+    public List<Product> getMostFavoritedProducts() {
+        List<Product> products = new ArrayList<>();
+        String sql = "SELECT p.*, COUNT(f.User_ID) AS FavoriteCount "
+                + "FROM Products p "
+                + "LEFT JOIN Favorites f ON p.Product_ID = f.Product_ID "
+                + "GROUP BY p.Product_ID, p.Product_Name, p.Brand, p.Price, p.Image, p.Description, p.Size, p.Quantity, p.Rate, p.Type "
+                + "ORDER BY FavoriteCount DESC";
 
+        try ( Connection conn = new DBContext().getConnection();  PreparedStatement ps = conn.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Product p = new Product(
+                        rs.getInt("Product_ID"),
+                        rs.getString("Brand"),
+                        rs.getString("Product_Name"),
+                        rs.getDouble("Price"),
+                        rs.getInt("Quantity"),
+                        rs.getString("Size"),
+                        rs.getString("Description"),
+                        rs.getString("Image"),
+                        rs.getDouble("Rate"),
+                        rs.getString("Type")
+                );
+                p.setFavoriteCount(rs.getInt("FavoriteCount")); // Thêm dòng này
+                products.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
 
     public boolean insertProduct(Product product) {
         String query = "INSERT INTO Products (Brand, Product_Name, Price, Quantity, Size, Description, Image, Rate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";

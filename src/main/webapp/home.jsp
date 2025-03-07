@@ -4,6 +4,7 @@
     Author     : ADMIN
 --%>
 
+<%@page import="dao.FavoriteDAO"%>
 <%@page import="java.util.List"%>
 <%@page import="model.Product"%>
 <%@page import="dao.ProductDAO"%>
@@ -27,48 +28,80 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="style/style.css"/>
- <style>
-  /* Bestseller slider styles */
-  .bestseller-slider {
-      overflow: hidden;
-      position: relative;
-      width: 100%;
-      height: 400px; /* Tăng chiều cao slider */
-      margin-bottom: 40px;
-  }
-  .slider-track {
-      display: flex;
-      width: calc(200%);
-      animation: scroll 20s linear infinite;
-  }
-/*  .slider-track:hover {
-      animation-play-state: paused;
-  }*/
-  .bestseller-card {
-      flex: 0 0 auto;
-      width: 300px;  /* Tăng chiều rộng card */
-      height: 400px; /* Tăng chiều cao card */
-      margin-right: 15px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-  }
-  /* Đặt hình ảnh chiếm 3/4 chiều cao card (400px * 3/4 = 300px) */
-  .bestseller-card img {
-      width: 100%;
-      height: 300px;
-      object-fit: cover;
-  }
-  /* Phần thông tin (card-body) sẽ tự động chiếm phần còn lại (100px) */
-  @keyframes scroll {
-      0% {
-          transform: translateX(0);
-      }
-      100% {
-          transform: translateX(-50%);
-      }
-  }
-</style>
+        <style>
+            /* Bestseller slider styles */
+            .bestseller-slider {
+                overflow: hidden;
+                position: relative;
+                width: 100%;
+                height: 400px; /* Tăng chiều cao slider */
+                margin-bottom: 40px;
+            }
+            .slider-track {
+                display: flex;
+                width: calc(200%);
+                animation: scroll 20s linear infinite;
+            }
+            /*  .slider-track:hover {
+                  animation-play-state: paused;
+              }*/
+            .bestseller-card {
+                flex: 0 0 auto;
+                width: 300px;  /* Tăng chiều rộng card */
+                height: 400px; /* Tăng chiều cao card */
+                margin-right: 15px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+            /* Đặt hình ảnh chiếm 3/4 chiều cao card (400px * 3/4 = 300px) */
+            .bestseller-card img {
+                width: 100%;
+                height: 300px;
+                object-fit: cover;
+            }
+            /* Phần thông tin (card-body) sẽ tự động chiếm phần còn lại (100px) */
+            @keyframes scroll {
+                0% {
+                    transform: translateX(0);
+                }
+                100% {
+                    transform: translateX(-50%);
+                }
+            }
+
+            /* Style cho badge yêu thích */
+            .favorite-badge {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                background: rgba(255, 255, 255, 0.8);
+                padding: 5px 10px;
+                border-radius: 15px;
+                z-index: 2;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+
+            .favorite-count {
+                font-weight: 600;
+                color: #dc3545;
+            }
+
+            /* Đảm bảo card có position relative */
+            .bestseller-card {
+                position: relative; /* Thêm dòng này */
+                flex: 0 0 auto;
+                width: 300px;
+                height: 400px;
+                margin-right: 15px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+        </style>
 
     </head>
     <body>
@@ -84,13 +117,25 @@
                     </form>
                     <ul class="navbar-nav mb-2 mb-lg-0">
                         <% if (user == null) { %>
-                        <li class="nav-item">
+                        <li class="nav-item"> 
                             <a class="nav-link active" aria-current="page" href="login.jsp">    <i class="fa fa-user"></i>
                             </a>
                         </li>
                         <% } else { %>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="profile.jsp">    <i class="fa fa-user"></i>
+                            </a>
+                        </li>
+                        <%
+                            FavoriteDAO favoriteDAO = new FavoriteDAO();
+                            List<Product> favorites = favoriteDAO.getFavoriteProducts(user.getUserId());
+                        %>
+                        <li class="nav-item mx-3">
+                            <a class="nav-link" href="favoriteList.jsp">
+                                <i class="fa fa-heart text-danger"></i>
+                                <% if (!favorites.isEmpty()) {%>
+                                <span class="badge bg-danger rounded-pill"><%= favorites.size()%></span>
+                                <% } %>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -175,49 +220,91 @@
             <img src="asset/home.jpg" class="d-block w-100" alt="banner">
         </div>
 
-<!-- Phần Bestseller List: 5 sản phẩm bán chạy nhất -->
-<div class="container mt-5">
-<h3 class="text-center mb-4" style="color: red; font-weight: bold; font-size: 2rem;">Bestseller</h3>
-    <div class="bestseller-slider">
-        <!-- Nếu không cần nút điều khiển, bạn có thể xóa chúng -->
-        <div class="slider-track">
-            <% if (bestsellerList != null && !bestsellerList.isEmpty()) { 
-                   // Lặp qua danh sách bestseller lần thứ nhất
-                   for (Product p : bestsellerList) { %>
-            <a href="product_detail.jsp?productId=<%= p.getProduct_ID() %>" class="text-decoration-none">
-                <div class="card bestseller-card">
-                    <img src="<%= p.getImage() %>" class="card-img-top" alt="<%= p.getProduct_Name() %>">
-                    <div class="card-body p-2">
-                        <h6 class="card-title text-center" style="font-size: 16px;"><%= p.getProduct_Name() %></h6>
-                        <p class="card-text text-center" style="font-size: 18px; font-weight: bold; color: red;">
-                            $<%= p.getPrice() %>
-                        </p>
+        <!-- Phần Bestseller List: 5 sản phẩm bán chạy nhất -->
+        <div class="container mt-5">
+            <h3 class="text-center mb-4" style="color: red; font-weight: bold; font-size: 2rem;">Bestseller</h3>
+            <div class="bestseller-slider">
+                <!-- Nếu không cần nút điều khiển, bạn có thể xóa chúng -->
+                <div class="slider-track">
+                    <% if (bestsellerList != null && !bestsellerList.isEmpty()) {
+                            // Lặp qua danh sách bestseller lần thứ nhất
+                            for (Product p : bestsellerList) {%>
+                    <a href="product_detail.jsp?productId=<%= p.getProduct_ID()%>" class="text-decoration-none">
+                        <div class="card bestseller-card">
+                            <img src="<%= p.getImage()%>" class="card-img-top" alt="<%= p.getProduct_Name()%>">
+                            <div class="card-body p-2">
+                                <h6 class="card-title text-center" style="font-size: 16px;"><%= p.getProduct_Name()%></h6>
+                                <p class="card-text text-center" style="font-size: 18px; font-weight: bold; color: red;">
+                                    $<%= p.getPrice()%>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                    <%   }
+                        // Lặp lại danh sách để tạo hiệu ứng cuộn liên tục
+                        for (Product p : bestsellerList) {%>
+                    <a href="product_detail.jsp?productId=<%= p.getProduct_ID()%>" class="text-decoration-none">
+                        <div class="card bestseller-card">
+                            <img src="<%= p.getImage()%>" class="card-img-top" alt="<%= p.getProduct_Name()%>">
+                            <div class="card-body p-2">
+                                <h6 class="card-title text-center" style="font-size: 16px;"><%= p.getProduct_Name()%></h6>
+                                <p class="card-text text-center" style="font-size: 18px; font-weight: bold; color: red;">
+                                    $<%= p.getPrice()%>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                    <%   }
+                    } else { %>
+                    <div class="col-12">
+                        <div class="alert alert-info text-center">No bestseller products found.</div>
                     </div>
+                    <% }%>
                 </div>
-            </a>
-            <%   } 
-                   // Lặp lại danh sách để tạo hiệu ứng cuộn liên tục
-                   for (Product p : bestsellerList) { %>
-            <a href="product_detail.jsp?productId=<%= p.getProduct_ID() %>" class="text-decoration-none">
-                <div class="card bestseller-card">
-                    <img src="<%= p.getImage() %>" class="card-img-top" alt="<%= p.getProduct_Name() %>">
-                    <div class="card-body p-2">
-                        <h6 class="card-title text-center" style="font-size: 16px;"><%= p.getProduct_Name() %></h6>
-                        <p class="card-text text-center" style="font-size: 18px; font-weight: bold; color: red;">
-                            $<%= p.getPrice() %>
-                        </p>
-                    </div>
-                </div>
-            </a>
-            <%   } 
-                } else { %>
-            <div class="col-12">
-                <div class="alert alert-info text-center">No bestseller products found.</div>
             </div>
-            <% } %>
         </div>
-    </div>
-</div>
+        <!-- Phần Most Favorited Products -->
+        <div class="container mt-5">
+            <h3 class="text-center mb-4" style="color: red; font-weight: bold; font-size: 2rem;">Most Loved</h3>
+            <div class="bestseller-slider">
+                <div class="slider-track">
+                    <%
+
+                        List<Product> mostFavorited = productDAO.getMostFavoritedProducts();
+                        if (mostFavorited != null && !mostFavorited.isEmpty()) {
+                            // Lặp qua danh sách 2 lần để tạo hiệu ứng cuộn vô hạn
+                            for (int i = 0; i < 2; i++) {
+                                for (Product p : mostFavorited) {
+                    %>
+                    <a href="product_detail.jsp?productId=<%= p.getProduct_ID()%>" class="text-decoration-none">
+                        <div class="card bestseller-card">
+                            <!-- Thêm phần trái tim và số lượt thích ở đây -->
+                            <div class="favorite-badge">
+                                <i class="fa fa-heart text-danger"></i>
+                                <span class="favorite-count"><%= p.getFavoriteCount()%></span>
+                            </div>
+
+                            <img src="<%= p.getImage()%>" class="card-img-top" alt="<%= p.getProduct_Name()%>">
+                            <div class="card-body p-2">
+                                <h6 class="card-title text-center" style="font-size: 16px;"><%= p.getProduct_Name()%></h6>
+                                <p class="card-text text-center" style="font-size: 18px; font-weight: bold; color: red;">
+                                    $<%= p.getPrice()%>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                    <%
+                            }
+                        }
+                    } else {
+                    %>
+                    <div class="col-12">
+                        <div class="alert alert-info text-center">No favorite products yet.</div>
+                    </div>
+                    <% }%>
+                </div>
+            </div>
+        </div>
 
 
         <div class="footer">
@@ -246,7 +333,7 @@
                         <h3>Contact</h3>
                         <p>Address: SE1817, FPT University</p>
                         <p>Phone number: 123456789 </p>
-                        <p>Email: shopshoegroup7@gmail.com</p>
+                        <p>Email: kokororay356@gmail.com</p>
                     </div>
 
                     <!-- Theo dõi chúng tôi -->
@@ -258,7 +345,7 @@
                 </div>
 
                 <div class="footer-bottom">
-                    <p>&copy; Group 5.</p>
+                    <p>&copy; Group 7.</p>
                 </div>
             </footer>
         </div>

@@ -32,6 +32,9 @@ model\OrderItem.class
 controller\AddUserServlet.class
 controller\typeController.class
 utils\EmailUtil$1.class
+dao\FavoriteDAO.class
 controller\LogoutServlet.class
+controller\FavoriteServlet.class
+controller\RemoveFromCartServlet.class
 controller\RegisterServlet.class
 dao\ProductDAO.class

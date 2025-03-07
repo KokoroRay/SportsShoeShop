@@ -9,7 +9,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBContext {
-    private final String url = "jdbc:sqlserver://localhost:1433;databaseName=group5";
+    private final String url = "jdbc:sqlserver://localhost:1433;databaseName=group7";
     private final String user = "sa";
     private final String password = "0123456789";
 
