@@ -11,10 +11,12 @@ D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\DeleteUserServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\DeleteProductServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\EditProductServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\UpdateProfileServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\FavoriteServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\UpdateCartServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\model\CartItem.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\UpdateOrderStatusServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\CheckoutServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\RemoveFromCartServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\RateProductServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\typeController.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\ResetPasswordServlet.java
@@ -25,6 +27,7 @@ D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\CartServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\dao\OrderDAO.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\RegisterServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\ChangePasswordServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\dao\FavoriteDAO.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\connect\DBContext.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\model\Order.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\model\OrderItem.java

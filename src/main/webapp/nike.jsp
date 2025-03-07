@@ -4,6 +4,7 @@
     Author     : ADMIN
 --%>
 
+<%@page import="dao.FavoriteDAO"%>
 <%@page import="model.User"%>
 <%@page import="java.util.List"%>
 <%@page import="model.Product"%>
@@ -40,13 +41,25 @@
                     </form>
                     <ul class="navbar-nav mb-2 mb-lg-0">
                         <% if (user == null) { %>
-                        <li class="nav-item">
+                        <li class="nav-item"> 
                             <a class="nav-link active" aria-current="page" href="login.jsp">    <i class="fa fa-user"></i>
                             </a>
                         </li>
                         <% } else { %>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="profile.jsp">    <i class="fa fa-user"></i>
+                            </a>
+                        </li>
+                        <%
+                            FavoriteDAO favoriteDAO = new FavoriteDAO();
+                            List<Product> favorites = favoriteDAO.getFavoriteProducts(user.getUserId());
+                        %>
+                        <li class="nav-item mx-3">
+                            <a class="nav-link" href="favoriteList.jsp">
+                                <i class="fa fa-heart text-danger"></i>
+                                <% if (!favorites.isEmpty()) {%>
+                                <span class="badge bg-danger rounded-pill"><%= favorites.size()%></span>
+                                <% } %>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -99,35 +112,35 @@
                 </div>
             </div>
         </nav>
-         <div class="container mt-5">
-        <h2 class="text-center">Nike Shoes</h2>
-        <div class="row">
-            <%
-                ProductDAO dao = new ProductDAO();
-                List<Product> nikeProducts = dao.getProductsByBrand("Nike");
-                for (Product product : nikeProducts) {
-            %>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="<%= product.getImage() %>" class="card-img-top" alt="<%= product.getProduct_Name() %>">
-                    <div class="card-body">
-                        <h5 class="card-title"><%= product.getProduct_Name() %></h5>
-                        <p class="card-text"><%= product.getDescription() %></p>
-                        <p class="card-text text-danger">Price: <%= product.getPrice() %>$</p>
-                        <a href="DetailController?productId=<%= product.getProduct_ID() %>" class="btn btn-primary">View Details</a>
-                        
+        <div class="container mt-5">
+            <h2 class="text-center">Nike Shoes</h2>
+            <div class="row">
+                <%
+                    ProductDAO dao = new ProductDAO();
+                    List<Product> nikeProducts = dao.getProductsByBrand("Nike");
+                    for (Product product : nikeProducts) {
+                %>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="<%= product.getImage()%>" class="card-img-top" alt="<%= product.getProduct_Name()%>">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= product.getProduct_Name()%></h5>
+                            <p class="card-text"><%= product.getDescription()%></p>
+                            <p class="card-text text-danger">Price: <%= product.getPrice()%>$</p>
+                            <a href="DetailController?productId=<%= product.getProduct_ID()%>" class="btn btn-primary">View Details</a>
+
+                        </div>
                     </div>
                 </div>
+                <%
+                    }
+                %>
             </div>
-            <%
-                }
-            %>
         </div>
-    </div>
-        
+
 
         <!-- footer -->
-       <div class="footer">
+        <div class="footer">
             <footer>
                 <div class="footer-container">
                     <!-- Về chúng tôi -->
