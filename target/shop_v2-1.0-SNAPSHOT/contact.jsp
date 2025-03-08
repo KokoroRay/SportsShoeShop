@@ -126,7 +126,7 @@ main {
 </style>
 <body>
     <header>
-        <h1>GROUP 5 STORE</h1>
+        <h1>GROUP 7 STORE</h1>
         <nav>
             <ul>
                 <li><a href="home.jsp">Home</a></li>
@@ -141,15 +141,15 @@ main {
             
             <div class="info">
                 <p><strong>Phone:</strong> +84 123 456 789</p>
-                <p><strong>Email:</strong> shopshoegroup5@gmail.com</p>
-                <p><strong>Address:</strong> SE1812, FPT University</p>
+                <p><strong>Email:</strong> kokororay356@gmail.com</p>
+                <p><strong>Address:</strong> SE1817, FPT University</p>
                 <p><strong>Business Hours:</strong> Monday - Saturday, 9:00 AM - 6:00 PM</p>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2024 Football Shoes Shop. All Rights Reserved.</p>
+        <p>&copy; 2025 Football Shoes Shop. All Rights Reserved.</p>
     </footer>
 </body>
 </html>
