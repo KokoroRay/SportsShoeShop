@@ -83,17 +83,17 @@
         <div class="team-container">
             <div class="team-member">
                 
-                <h3>Tran Hoang Nha</h3>
+                <h3>Nguyen Minh Tam</h3>
                
             </div>
             <div class="team-member">
                 
-                <h3>Phan Nguyen Trong Nhan</h3>
+                <h3>Doan Duong Ngoc Thien</h3>
                 
             </div>
             <div class="team-member">
                
-                <h3>Pham Phu Nhuan</h3>
+                <h3>Tran Van Lam</h3>
                 
             </div>
             <div class="team-member">
@@ -102,7 +102,7 @@
                 
             </div>
             <div class="team-member">
-                 <h3>Huynh Phu Binh</h3>
+                 <h3>Nguyen Quoc Kiet</h3>
                 
                 
             </div>

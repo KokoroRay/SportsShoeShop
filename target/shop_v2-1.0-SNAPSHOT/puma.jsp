@@ -164,9 +164,9 @@
                     <!-- Liên hệ -->
                     <div class="footer-section contact">
                         <h3>Contact</h3>
-                        <p>Address: SE1812, FPT University</p>
+                        <p>Address: SE1817, FPT University</p>
                         <p>Phone number: 123456789 </p>
-                        <p>Email: shopshoegroup5@gmail.com</p>
+                        <p>Email: kokororay356@gmail.com</p>
                     </div>
 
                     <!-- Theo dõi chúng tôi -->
@@ -178,7 +178,7 @@
                 </div>
 
                 <div class="footer-bottom">
-                    <p>&copy; Group 5.</p>
+                    <p>&copy; Group 7.</p>
                 </div>
             </footer>
         </div>
