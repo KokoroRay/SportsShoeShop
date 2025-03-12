@@ -14,7 +14,6 @@
 <%
     // Retrieve user info from session
     User user = (User) session.getAttribute("user");
-
     // Fetch the list of products from the database
     ProductDAO productDAO = new ProductDAO();
     List<Product> productList = productDAO.getAllProducts();
