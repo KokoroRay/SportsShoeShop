@@ -99,7 +99,8 @@
                                 <li><a class="dropdown-item" href="puma.jsp">Puma</a></li>
                                 <li><a class="dropdown-item" href="mizuno.jsp">Mizuno</a></li>
                                 <li><a class="dropdown-item" href="joma.jsp">Joma</a></li>
-                                <li><a class="dropdown-item" href="kamito.jsp"  style="color: red">Kamito</a></li>
+                                <li><a class="dropdown-item" href="kamito.jsp"style="color: red">Kamito</a></li>
+                                <li><a class="dropdown-item" href="other.jsp">Other</a></li>
                             </ul>
                         </li>
                         <li class="nav-item mx-3">
@@ -164,9 +165,9 @@
                     <!-- Liên hệ -->
                     <div class="footer-section contact">
                         <h3>Contact</h3>
-                        <p>Address: SE1812, FPT University</p>
+                        <p>Address: SE1817, FPT University</p>
                         <p>Phone number: 123456789 </p>
-                        <p>Email: shopshoegroup5@gmail.com</p>
+                        <p>Email: kokororay356@gmail.com</p>
                     </div>
 
                     <!-- Theo dõi chúng tôi -->
@@ -178,7 +179,7 @@
                 </div>
 
                 <div class="footer-bottom">
-                    <p>&copy; Group 5.</p>
+                    <p>&copy; Group 7.</p>
                 </div>
             </footer>
         </div>

@@ -1,18 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
-
 package controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
+import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.List;
 import model.CartItem;
 
@@ -22,22 +14,28 @@ import model.CartItem;
  */
 @WebServlet("/RemoveFromCartServlet")
 public class RemoveFromCartServlet extends HttpServlet {
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int productId = Integer.parseInt(request.getParameter("productId"));
-        
         HttpSession session = request.getSession();
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
-        
-        if (cart != null) {
-            cart.removeIf(item -> item.getProduct_Id() == productId);
-            session.setAttribute("cart", cart);
-        }
 
-        response.setStatus(HttpServletResponse.SC_OK);
+        try {
+            String productIdStr = URLDecoder.decode(request.getParameter("productId"), "UTF-8");
+            int productId = Integer.parseInt(productIdStr); // Chuyển sang int
+            String size = URLDecoder.decode(request.getParameter("size"), "UTF-8");
+
+            if (cart != null) {
+                cart.removeIf(item
+                        -> item.getProduct_Id() == productId
+                        && // So sánh int với int
+                        item.getSize().equals(size)
+                );
+            }
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid product ID format");
+        }
     }
 }
-

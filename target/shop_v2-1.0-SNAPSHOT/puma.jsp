@@ -96,10 +96,11 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="nike.jsp">Nike</a></li>
                                 <li><a class="dropdown-item" href="adidas.jsp">Adidas</a></li>
-                                <li><a class="dropdown-item" href="puma.jsp" style="color: red">Puma</a></li>
+                                <li><a class="dropdown-item" href="puma.jsp"style="color: red">Puma</a></li>
                                 <li><a class="dropdown-item" href="mizuno.jsp">Mizuno</a></li>
                                 <li><a class="dropdown-item" href="joma.jsp">Joma</a></li>
                                 <li><a class="dropdown-item" href="kamito.jsp">Kamito</a></li>
+                                <li><a class="dropdown-item" href="other.jsp">Other</a></li>
                             </ul>
                         </li>
                         <li class="nav-item mx-3">
@@ -112,32 +113,32 @@
                 </div>
             </div>
         </nav>
-         <div class="container mt-5">
-        <h2 class="text-center">Puma Shoes</h2>
-        <div class="row">
-            <%
-                ProductDAO dao = new ProductDAO();
-                List<Product> PumaProducts = dao.getProductsByBrand("Puma");
-                for (Product product : PumaProducts) {
-            %>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="<%= product.getImage() %>" class="card-img-top" alt="<%= product.getProduct_Name() %>">
-                    <div class="card-body">
-                        <h5 class="card-title"><%= product.getProduct_Name() %></h5>
-                        <p class="card-text"><%= product.getDescription() %></p>
-                        <p class="card-text text-danger">Price: <%= product.getPrice() %>$</p>
-                        <a href="DetailController?productId=<%= product.getProduct_ID() %>" class="btn btn-primary">View Details</a>
-                        
+        <div class="container mt-5">
+            <h2 class="text-center">Puma Shoes</h2>
+            <div class="row">
+                <%
+                    ProductDAO dao = new ProductDAO();
+                    List<Product> PumaProducts = dao.getProductsByBrand("Puma");
+                    for (Product product : PumaProducts) {
+                %>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="<%= product.getImage()%>" class="card-img-top" alt="<%= product.getProduct_Name()%>">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= product.getProduct_Name()%></h5>
+                            <p class="card-text"><%= product.getDescription()%></p>
+                            <p class="card-text text-danger">Price: <%= product.getPrice()%>$</p>
+                            <a href="DetailController?productId=<%= product.getProduct_ID()%>" class="btn btn-primary">View Details</a>
+
+                        </div>
                     </div>
                 </div>
+                <%
+                    }
+                %>
             </div>
-            <%
-                }
-            %>
         </div>
-    </div>
-        
+
 
         <!-- footer -->
         <div class="footer">
@@ -164,9 +165,9 @@
                     <!-- Liên hệ -->
                     <div class="footer-section contact">
                         <h3>Contact</h3>
-                        <p>Address: SE1812, FPT University</p>
+                        <p>Address: SE1817, FPT University</p>
                         <p>Phone number: 123456789 </p>
-                        <p>Email: shopshoegroup5@gmail.com</p>
+                        <p>Email: kokororay356@gmail.com</p>
                     </div>
 
                     <!-- Theo dõi chúng tôi -->
@@ -178,7 +179,7 @@
                 </div>
 
                 <div class="footer-bottom">
-                    <p>&copy; Group 5.</p>
+                    <p>&copy; Group 7.</p>
                 </div>
             </footer>
         </div>

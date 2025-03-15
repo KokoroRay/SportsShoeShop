@@ -6,6 +6,9 @@ public class CartItem {
     private double Price;
     private int Quantity;
     private String Size;
+    private double originalPrice;
+    private double discountPercent;
+
 
     public CartItem() {
     }
@@ -61,5 +64,22 @@ public class CartItem {
         return Price * Quantity;
     }
 
+    public double getOriginalPrice() {
+        return originalPrice;
+    }
+
+    public void setOriginalPrice(double originalPrice) {
+        this.originalPrice = originalPrice;
+    }
+
+    public double getDiscountPercent() {
+        return discountPercent;
+    }
+
+    public void setDiscountPercent(double discountPercent) {
+        this.discountPercent = discountPercent;
+    }
+    
+    
     
 }

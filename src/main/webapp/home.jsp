@@ -42,9 +42,9 @@
                 width: calc(200%);
                 animation: scroll 20s linear infinite;
             }
-            /*  .slider-track:hover {
+              .slider-track:hover {
                   animation-play-state: paused;
-              }*/
+              }
             .bestseller-card {
                 flex: 0 0 auto;
                 width: 300px;  /* Tăng chiều rộng card */
@@ -100,6 +100,55 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
+            }
+            /* Badge giảm giá */
+            .discount-badge {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: #dc3545;
+                color: white;
+                padding: 5px 10px;
+                border-radius: 5px;
+                font-weight: bold;
+                z-index: 2;
+            }
+
+            /* Thời gian còn lại (trang chủ) */
+            .time-left-badge {
+                position: absolute;
+                bottom: 10px;
+                left: 10px;
+                background: #28a745;
+                color: white;
+                padding: 5px 10px;
+                border-radius: 15px;
+                font-size: 12px;
+                z-index: 2;
+            }
+
+            /* Giá gốc */
+            .original-price {
+                text-decoration: line-through;
+                color: #6c757d;
+                margin-right: 8px;
+            }
+
+            /* Giá sau giảm */
+            .discounted-price {
+                color: #dc3545;
+                font-weight: bold;
+            }
+
+            /* Thời gian còn lại (trang chi tiết) */
+            .time-left {
+                color: #28a745;
+                font-size: 14px;
+                margin: 10px 0;
+            }
+
+            .time-left .fa-clock {
+                margin-right: 5px;
             }
         </style>
 
@@ -176,6 +225,7 @@
                                 <li><a class="dropdown-item" href="mizuno.jsp">Mizuno</a></li>
                                 <li><a class="dropdown-item" href="joma.jsp">Joma</a></li>
                                 <li><a class="dropdown-item" href="kamito.jsp">Kamito</a></li>
+                                <li><a class="dropdown-item" href="other.jsp">Other</a></li>
                             </ul>
                         </li>
                         <li class="nav-item mx-3">
@@ -224,42 +274,53 @@
         <div class="container mt-5">
             <h3 class="text-center mb-4" style="color: red; font-weight: bold; font-size: 2rem;">Bestseller</h3>
             <div class="bestseller-slider">
-                <!-- Nếu không cần nút điều khiển, bạn có thể xóa chúng -->
                 <div class="slider-track">
                     <% if (bestsellerList != null && !bestsellerList.isEmpty()) {
-                            // Lặp qua danh sách bestseller lần thứ nhất
-                            for (Product p : bestsellerList) {%>
+                            for (Product p : bestsellerList) {
+                                boolean isDiscountActive = productDAO.isDiscountActive(p);
+                    %>
                     <a href="product_detail.jsp?productId=<%= p.getProduct_ID()%>" class="text-decoration-none">
                         <div class="card bestseller-card">
+                            <!-- Badge giảm giá -->
+                            <% if (isDiscountActive) {
+                                    long remainingDays = p.getRemainingDiscountDays();
+                                    if (remainingDays >= 0) {
+                            %>
+                            <div class="discount-badge bg-danger text-white p-1 rounded">
+                                -<%= Math.round(p.getDiscountPercent())%>%
+                            </div>
+                            <div class="time-left-badge bg-warning text-dark p-1 rounded">
+                                Còn <%= remainingDays%> ngày
+                            </div>
+                            <% }
+                                }%>
+
                             <img src="<%= p.getImage()%>" class="card-img-top" alt="<%= p.getProduct_Name()%>">
                             <div class="card-body p-2">
-                                <h6 class="card-title text-center" style="font-size: 16px;"><%= p.getProduct_Name()%></h6>
-                                <p class="card-text text-center" style="font-size: 18px; font-weight: bold; color: red;">
-                                    $<%= p.getPrice()%>
-                                </p>
+                                <h6 class="card-title text-center mb-2"><%= p.getProduct_Name()%></h6>
+                                <div class="price text-center">
+                                    <% if (isDiscountActive && p.getOriginalPrice() > 0) {%>
+                                    <span class="original-price text-muted text-decoration-line-through me-2">
+                                        $<%= String.format("%.2f", p.getOriginalPrice())%>
+                                    </span>
+                                    <span class="discounted-price text-danger fw-bold">
+                                        $<%= String.format("%.2f", productDAO.getDiscountedPrice(p))%>
+                                    </span>
+                                    <% } else {%>
+                                    <span class="current-price fw-bold">
+                                        $<%= String.format("%.2f", p.getPrice())%>
+                                    </span>
+                                    <% } %>
+                                </div>
                             </div>
                         </div>
                     </a>
-                    <%   }
-                        // Lặp lại danh sách để tạo hiệu ứng cuộn liên tục
-                        for (Product p : bestsellerList) {%>
-                    <a href="product_detail.jsp?productId=<%= p.getProduct_ID()%>" class="text-decoration-none">
-                        <div class="card bestseller-card">
-                            <img src="<%= p.getImage()%>" class="card-img-top" alt="<%= p.getProduct_Name()%>">
-                            <div class="card-body p-2">
-                                <h6 class="card-title text-center" style="font-size: 16px;"><%= p.getProduct_Name()%></h6>
-                                <p class="card-text text-center" style="font-size: 18px; font-weight: bold; color: red;">
-                                    $<%= p.getPrice()%>
-                                </p>
-                            </div>
-                        </div>
-                    </a>
-                    <%   }
+                    <% }
                     } else { %>
                     <div class="col-12">
                         <div class="alert alert-info text-center">No bestseller products found.</div>
                     </div>
-                    <% }%>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -269,37 +330,31 @@
             <div class="bestseller-slider">
                 <div class="slider-track">
                     <%
-
                         List<Product> mostFavorited = productDAO.getMostFavoritedProducts();
                         if (mostFavorited != null && !mostFavorited.isEmpty()) {
-                            // Lặp qua danh sách 2 lần để tạo hiệu ứng cuộn vô hạn
-                            for (int i = 0; i < 2; i++) {
-                                for (Product p : mostFavorited) {
+                            for (Product p : mostFavorited) {
                     %>
                     <a href="product_detail.jsp?productId=<%= p.getProduct_ID()%>" class="text-decoration-none">
                         <div class="card bestseller-card">
-                            <!-- Thêm phần trái tim và số lượt thích ở đây -->
                             <div class="favorite-badge">
                                 <i class="fa fa-heart text-danger"></i>
                                 <span class="favorite-count"><%= p.getFavoriteCount()%></span>
                             </div>
-
                             <img src="<%= p.getImage()%>" class="card-img-top" alt="<%= p.getProduct_Name()%>">
                             <div class="card-body p-2">
-                                <h6 class="card-title text-center" style="font-size: 16px;"><%= p.getProduct_Name()%></h6>
-                                <p class="card-text text-center" style="font-size: 18px; font-weight: bold; color: red;">
+                                <h6 class="card-title text-center"><%= p.getProduct_Name()%></h6>
+                                <p class="card-text text-center" style="color: red; font-weight: bold;">
                                     $<%= p.getPrice()%>
                                 </p>
                             </div>
                         </div>
                     </a>
                     <%
-                            }
                         }
                     } else {
                     %>
                     <div class="col-12">
-                        <div class="alert alert-info text-center">No favorite products yet.</div>
+                        <div class="alert alert-info text-center">No products found.</div>
                     </div>
                     <% }%>
                 </div>

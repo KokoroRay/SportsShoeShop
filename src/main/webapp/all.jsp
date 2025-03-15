@@ -122,6 +122,7 @@
                                 <li><a class="dropdown-item" href="mizuno.jsp">Mizuno</a></li>
                                 <li><a class="dropdown-item" href="joma.jsp">Joma</a></li>
                                 <li><a class="dropdown-item" href="kamito.jsp">Kamito</a></li>
+                                <li><a class="dropdown-item" href="other.jsp">Other</a></li>
                             </ul>
                         </li>
                         <li class="nav-item mx-3">
@@ -160,8 +161,31 @@
                             </div>
                             <div class="product-info text-center">
                                 <h5>${product.getProduct_Name()} - ${product.getDescription()}</h5>
-                                <div class="product-price">
-                                    <span class="current-price">${product.getPrice()}$</span>
+                                <div class="product-price text-center">
+                                    <%
+                                        Product product = (Product) pageContext.getAttribute("product");
+                                        boolean isDiscountActive = productDAO.isDiscountActive(product);
+                                    %>
+
+                                    <% if (isDiscountActive) {%>
+                                    <!-- Giá khuyến mãi -->
+                                    <span class="text-danger fw-bold">
+                                        $<%= String.format("%.2f", productDAO.getDiscountedPrice(product))%>
+                                    </span>
+                                    <!-- Giá gốc (gạch ngang) -->
+                                    <small class="text-muted text-decoration-line-through d-block">
+                                        $<%= String.format("%.2f", product.getOriginalPrice())%>
+                                    </small>
+                                    <!-- Badge % giảm giá -->
+                                    <span class="badge bg-danger mt-1">
+                                        -<%= product.getDiscountPercent()%>%
+                                    </span>
+                                    <% } else {%>
+                                    <!-- Giá thường -->
+                                    <span class="current-price">
+                                        $<%= String.format("%.2f", product.getPrice())%>
+                                    </span>
+                                    <% }%>
                                 </div>
                             </div>
                         </a>
@@ -172,7 +196,7 @@
 
 
         <!-- footer -->
-       <div class="footer">
+        <div class="footer">
             <footer>
                 <div class="footer-container">
                     <!-- Về chúng tôi -->
@@ -196,9 +220,9 @@
                     <!-- Liên hệ -->
                     <div class="footer-section contact">
                         <h3>Contact</h3>
-                        <p>Address: SE1812, FPT University</p>
+                        <p>Address: SE1817, FPT University</p>
                         <p>Phone number: 123456789 </p>
-                        <p>Email: shopshoegroup5@gmail.com</p>
+                        <p>Email: kokororay356@gmail.com</p>
                     </div>
 
                     <!-- Theo dõi chúng tôi -->
@@ -210,7 +234,7 @@
                 </div>
 
                 <div class="footer-bottom">
-                    <p>&copy; Group 5.</p>
+                    <p>&copy; Group 7.</p>
                 </div>
             </footer>
         </div>
