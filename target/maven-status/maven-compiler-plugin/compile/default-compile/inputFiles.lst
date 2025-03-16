@@ -5,6 +5,7 @@ D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\EditUserServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\DeleteProductServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\FavoriteServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\model\CartItem.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\UpdateOrderServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\TrademarkServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\RemoveFavoriteServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\RemoveFromCartServlet.java
@@ -19,6 +20,7 @@ D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\dao\FavoriteDAO.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\model\Order.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\dao\UserDAO.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\AddUserServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\CancelOrderServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\OrderDetailServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\PurchaseHistoryServlet.java
 D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\LogoutServlet.java

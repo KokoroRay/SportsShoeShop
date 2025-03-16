@@ -1,9 +1,3 @@
-<%-- 
-    Document   : home
-    Created on : Oct 20, 2024, 7:13:25 PM
-    Author     : ADMIN
---%>
-
 <%@page import="dao.FavoriteDAO"%>
 <%@page import="model.User"%>
 <%@page import="java.util.List"%>

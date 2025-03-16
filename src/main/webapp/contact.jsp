@@ -141,7 +141,7 @@ main {
             
             <div class="info">
                 <p><strong>Phone:</strong> +84 123 456 789</p>
-                <p><strong>Email:</strong> shopshoegroup5@gmail.com</p>
+                <p><strong>Email:</strong> kokororay356@gmail.com</p>
                 <p><strong>Address:</strong> SE1817, FPT University</p>
                 <p><strong>Business Hours:</strong> Monday - Saturday, 9:00 AM - 6:00 PM</p>
             </div>

@@ -131,6 +131,8 @@
             <a href="manage-users.jsp"><i class="fas fa-users mr-2"></i> Manage Users</a>
             <a href="manage-discount.jsp"><i class="fas fa-tag mr-2"></i> Manage Discounts</a>
             <a href="manage-trademark.jsp" class="active"><i class="fas fa-copyright mr-2"></i> Manage Trademark</a>
+            <a href="adminNotifications.jsp?page=users"><i class="fas fa-bell mr-2"></i> Notification Order</a>
+
         </div>
 
         <%-- Hiển thị thông báo --%>

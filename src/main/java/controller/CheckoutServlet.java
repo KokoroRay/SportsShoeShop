@@ -50,10 +50,16 @@ public class CheckoutServlet extends HttpServlet {
                 orderDetails += item.getProduct_Name() + " (Size: " + item.getSize() + ", Quantity: " + item.getQuantity() + "): $" + item.getTotalPrice() + "\n";
             }
 
-            notificationDAO.createNotification(
+            boolean notificationCreated = notificationDAO.createNotification(
                     orderId, user.getUserId(), "New order #" + orderId + " awaiting confirmation.", "pending",
                     fullName, phoneNumber, address, paymentMethod, orderDetails, totalPrice
             );
+
+// Kiểm tra xem có lưu thành công không
+            if (!notificationCreated) {
+                response.sendRedirect("viewcart.jsp?error=Failed to save order notification");
+                return;
+            }
 
             response.sendRedirect("orderStatus.jsp");
         } else {

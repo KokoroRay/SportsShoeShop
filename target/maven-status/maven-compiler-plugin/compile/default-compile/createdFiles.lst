@@ -49,4 +49,6 @@ controller\AddUserServlet.class
 controller\typeController.class
 utils\EmailUtil$1.class
 model\Trademark.class
+controller\UpdateOrderServlet.class
 controller\UpdateDiscountServlet.class
+controller\CancelOrderServlet.class

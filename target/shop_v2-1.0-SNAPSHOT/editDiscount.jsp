@@ -1,9 +1,3 @@
-<%-- 
-    Document   : editDiscount
-    Created on : Mar 12, 2025, 9:17:31 PM
-    Author     : Nguyen Minh Tam - CE181522
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.Product, dao.ProductDAO, java.text.SimpleDateFormat, model.User" %>
 <%
