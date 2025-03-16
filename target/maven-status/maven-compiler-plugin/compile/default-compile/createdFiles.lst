@@ -6,6 +6,7 @@ controller\OrderDetailServlet.class
 controller\ForgotPasswordServlet.class
 controller\ChangePasswordServlet.class
 controller\EditUserServlet.class
+controller\deleteOrder.class
 model\Product.class
 utils\PasswordUtils.class
 controller\TrademarkServlet.class
@@ -14,6 +15,7 @@ controller\productController.class
 controller\AddProductServlet.class
 model\User.class
 controller\DeleteProductServlet.class
+model\Notification.class
 filter\allFilter.class
 controller\AddToCartServlet.class
 controller\RateProductServlet.class
@@ -23,10 +25,12 @@ controller\LogoutServlet.class
 controller\DeleteTrademarkServlet.class
 controller\FavoriteServlet.class
 controller\RemoveFromCartServlet.class
+dao\NotificationDAO.class
 controller\RegisterServlet.class
 dao\ProductDAO.class
 controller\searchController.class
 model\CartItem.class
+controller\ConfirmOrderServlet.class
 controller\UpdateOrderStatusServlet.class
 controller\EditProductServlet.class
 controller\RemoveFavoriteServlet.class
@@ -39,6 +43,7 @@ controller\LoginServlet.class
 controller\CheckoutServlet.class
 connect\DBContext.class
 model\Order.class
+controller\GetCartTotalServlet.class
 model\OrderItem.class
 controller\AddUserServlet.class
 controller\typeController.class

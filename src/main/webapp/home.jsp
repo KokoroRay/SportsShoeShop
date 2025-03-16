@@ -191,6 +191,10 @@
                             <a class="nav-link active" aria-current="page" href="viewcart.jsp"><i class="fa fa-cart-plus"></i>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="orderStatus.jsp"> order status <i class=" "></i>
+                            </a>
+                        </li>
 
                         <% }%>
                     </ul>
