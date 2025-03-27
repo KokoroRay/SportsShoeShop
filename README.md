@@ -54,8 +54,8 @@
 
 ## 📬 Liên Hệ
 
-[![Email](https://img.shields.io/badge/Email-support%40shoestore.com-red)](tam.nguyen.ia.cm@gmail.com)
-[![Hotline](https://img.shields.io/badge/Hotline-1900.1234-yellow)](tel:0933561709)
+[![Email](https://img.shields.io/badge/Email-tam.nguyen.ia.cm@gmail.com-red)](tam.nguyen.ia.cm@gmail.com)
+[![Hotline](https://img.shields.io/badge/Hotline-0933561709-yellow)](tel:0933561709)
 
 
 ---
