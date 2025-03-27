@@ -1,53 +1,53 @@
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\ChangePasswordServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\model\OrderItem.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\AddUserServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\RegisterServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\LogoutServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\model\User.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\GetCartTotalServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\OrderDetailServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\model\Trademark.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\dao\TrademarkDAO.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\TrademarkServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\AddToCartServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\dao\ProductDAO.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\LoginServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\deleteOrder.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\DeleteProductServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\UpdateProfileServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\filter\allFilter.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\CartServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\ConfirmOrderServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\RemoveFavoriteServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\DeleteTrademarkServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\DeleteUserServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\UpdateOrderServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\searchController.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\productController.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\DetailController.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\model\CartItem.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\dao\OrderDAO.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\dao\UserDAO.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\RemoveFromCartServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\PurchaseHistoryServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\model\Order.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\connect\DBContext.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\ForgotPasswordServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\dao\FavoriteDAO.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\UpdateOrderStatusServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\utils\PasswordUtils.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\CancelOrderServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\ResetPasswordServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\model\Notification.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\AddProductServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\UpdateCartServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\utils\EmailUtil.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\CheckoutServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\dao\NotificationDAO.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\model\Product.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\EditProductServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\EditUserServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\FavoriteServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\RateProductServlet.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\typeController.java
-D:\FPT\Semester_4\PRJ301\New folder (2)\project_shoe_shop_prj_sp25_gr7-Ray\src\main\java\controller\UpdateDiscountServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\AddProductServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\model\Notification.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\model\Trademark.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\EditUserServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\DeleteProductServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\FavoriteServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\model\CartItem.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\UpdateOrderServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\TrademarkServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\RemoveFavoriteServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\RemoveFromCartServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\RateProductServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\typeController.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\utils\EmailUtil.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\AddToCartServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\CartServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\RegisterServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\ChangePasswordServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\dao\FavoriteDAO.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\model\Order.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\dao\UserDAO.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\AddUserServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\CancelOrderServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\OrderDetailServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\PurchaseHistoryServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\LogoutServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\productController.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\searchController.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\model\Product.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\model\User.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\DetailController.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\filter\allFilter.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\DeleteUserServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\EditProductServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\UpdateProfileServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\UpdateCartServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\UpdateOrderStatusServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\CheckoutServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\ConfirmOrderServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\ResetPasswordServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\dao\NotificationDAO.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\dao\TrademarkDAO.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\utils\PasswordUtils.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\DeleteTrademarkServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\dao\ProductDAO.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\dao\OrderDAO.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\UpdateDiscountServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\connect\DBContext.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\model\OrderItem.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\deleteOrder.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\LoginServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\ForgotPasswordServlet.java
+D:\FPT\Semester_4\PRJ301\shop_v3\src\main\java\controller\GetCartTotalServlet.java
