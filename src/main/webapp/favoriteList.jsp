@@ -1,9 +1,3 @@
-<%-- 
-    Document   : favoriteList
-    Created on : Mar 7, 2025, 11:30:30 PM
-    Author     : Nguyen Minh Tam - CE181522
---%>
-
 <%@page import="dao.FavoriteDAO, model.Product, model.User, java.util.List"%>
 <%
     User user = (User) session.getAttribute("user");

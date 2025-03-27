@@ -34,6 +34,23 @@ public class NotificationDAO {
         }
     }
 
+    public boolean updateNotificationDetails(int orderId, String fullName, String phoneNumber, String address, String paymentMethod) {
+        String query = "UPDATE Notifications SET FullName = ?, PhoneNumber = ?, Address = ?, PaymentMethod = ? WHERE Order_ID = ? AND Status = 'pending'";
+        try ( Connection conn = dbContext.getConnection();  PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, fullName);
+            stmt.setString(2, phoneNumber);
+            stmt.setString(3, address);
+            stmt.setString(4, paymentMethod);
+            stmt.setInt(5, orderId);
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public boolean updateNotificationStatus(int notificationId, String status, int adminId) {
         String query = "UPDATE Notifications SET Status = ?, Admin_ID = ? WHERE Notification_ID = ?";
         try ( Connection conn = dbContext.getConnection();  PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -64,7 +81,7 @@ public class NotificationDAO {
                             rs.getString("FullName"),
                             rs.getString("PhoneNumber"),
                             rs.getString("Address"),
-                            rs.getString("PaymentMethod"),
+                            rs.getString("PaymentMethod") != null ? rs.getString("PaymentMethod") : "Cash", // Fix lỗi null
                             rs.getString("OrderDetails"),
                             rs.getDouble("TotalPrice")
                     );
@@ -73,6 +90,7 @@ public class NotificationDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.err.println("Notification not found for Order ID: " + orderId);
         return null;
     }
 
@@ -105,36 +123,34 @@ public class NotificationDAO {
         return null;
     }
 
-public User getUserByNotificationId(int notificationId) {
-    String query = "SELECT u.User_ID, u.User_Name, u.Password, u.Email, u.Phone, u.Address, u.DOB, u.Role "
-                 + "FROM Users u JOIN Notifications n ON u.User_ID = n.User_ID "
-                 + "WHERE n.Notification_ID = ?";
-    try (Connection conn = dbContext.getConnection(); 
-         PreparedStatement stmt = conn.prepareStatement(query)) {
-        
-        stmt.setInt(1, notificationId);
-        try (ResultSet rs = stmt.executeQuery()) {
-            if (rs.next()) {
-                return new User(
-                    rs.getInt("User_ID"),
-                    rs.getString("User_Name"),
-                    rs.getString("Password"),
-                    rs.getString("Email"),
-                    rs.getString("Phone"),
-                    rs.getString("Address"),
-                    rs.getString("DOB"),
-                    rs.getString("Role")
-                );
-            } else {
-                System.out.println("No matching user for notificationId: " + notificationId);
-            }
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return null;
-}
+    public User getUserByNotificationId(int notificationId) {
+        String query = "SELECT u.User_ID, u.User_Name, u.Password, u.Email, u.Phone, u.Address, u.DOB, u.Role "
+                + "FROM Users u JOIN Notifications n ON u.User_ID = n.User_ID "
+                + "WHERE n.Notification_ID = ?";
+        try ( Connection conn = dbContext.getConnection();  PreparedStatement stmt = conn.prepareStatement(query)) {
 
+            stmt.setInt(1, notificationId);
+            try ( ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new User(
+                            rs.getInt("User_ID"),
+                            rs.getString("User_Name"),
+                            rs.getString("Password"),
+                            rs.getString("Email"),
+                            rs.getString("Phone"),
+                            rs.getString("Address"),
+                            rs.getString("DOB"),
+                            rs.getString("Role")
+                    );
+                } else {
+                    System.out.println("No matching user for notificationId: " + notificationId);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public List<Notification> getNotificationsForAdmin() {
         List<Notification> notifications = new ArrayList<>();

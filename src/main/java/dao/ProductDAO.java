@@ -281,34 +281,51 @@ public class ProductDAO {
         return products;
     }
 
-    public List<Product> getBestsellerProducts() {
-        List<Product> products = new ArrayList<>();
-        String sql = "SELECT TOP 10 p.*, t.Trademark_Name FROM Products p JOIN Trademark t ON p.Trademark_ID = t.Trademark_ID ORDER BY Rate DESC";
-        DBContext context = new DBContext();
-        try ( Connection conn = context.getConnection();  PreparedStatement ps = conn.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                Product p = new Product(
-                        rs.getInt("Product_ID"),
-                        rs.getString("Trademark_Name"),
-                        rs.getString("Product_Name"),
-                        rs.getDouble("Price"),
-                        rs.getInt("Quantity"),
-                        rs.getString("Size"),
-                        rs.getString("Description"),
-                        rs.getString("Image"),
-                        rs.getDouble("Rate"),
-                        rs.getString("Type"));
-                p.setOriginalPrice(rs.getDouble("Original_Price"));
-                p.setDiscountPercent(rs.getDouble("Discount_Percent"));
-                p.setDiscountStartDate(rs.getDate("Discount_Start_Date"));
-                p.setDiscountEndDate(rs.getDate("Discount_End_Date"));
-                products.add(p);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+public List<Product> getBestsellerProducts() {
+    List<Product> products = new ArrayList<>();
+    String sql = "SELECT TOP 10 p.Product_ID, p.Trademark_ID, t.Trademark_Name, " +
+                 "p.Product_Name, p.Price, p.Quantity, p.Size, p.Description, p.Image, " +
+                 "p.Rate, p.Type, p.Original_Price, p.Discount_Percent, " +
+                 "p.Discount_Start_Date, p.Discount_End_Date, " +
+                 "SUM(oi.Quantity) AS TotalSold " +  // Tổng số lượng bán ra
+                 "FROM Products p " +
+                 "JOIN Trademark t ON p.Trademark_ID = t.Trademark_ID " +
+                 "JOIN Order_Items oi ON p.Product_ID = oi.Product_ID " +
+                 "GROUP BY p.Product_ID, p.Trademark_ID, t.Trademark_Name, " +
+                 "p.Product_Name, p.Price, p.Quantity, p.Size, p.Description, p.Image, " +
+                 "p.Rate, p.Type, p.Original_Price, p.Discount_Percent, " +
+                 "p.Discount_Start_Date, p.Discount_End_Date " +
+                 "ORDER BY TotalSold DESC"; // Sắp xếp theo tổng số lượng bán
+
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            Product p = new Product(
+                rs.getInt("Product_ID"),
+                rs.getString("Trademark_Name"), // Gán tên thương hiệu
+                rs.getString("Product_Name"),
+                rs.getDouble("Price"),
+                rs.getInt("Quantity"),
+                rs.getString("Size"),
+                rs.getString("Description"),
+                rs.getString("Image"),
+                rs.getDouble("Rate"),
+                rs.getString("Type")
+            );
+            p.setOriginalPrice(rs.getDouble("Original_Price"));
+            p.setDiscountPercent(rs.getDouble("Discount_Percent"));
+            p.setDiscountStartDate(rs.getDate("Discount_Start_Date"));
+            p.setDiscountEndDate(rs.getDate("Discount_End_Date"));
+            products.add(p);
         }
-        return products;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return products;
+}
+
 
     public List<Product> getRelatedProducts(int categoryId, int productId) {
         List<Product> relatedProducts = new ArrayList<>();
@@ -489,6 +506,43 @@ public class ProductDAO {
         return brands;
     }
 
+    public List<Product> getHotSellProducts() {
+        List<Product> hotSellProducts = new ArrayList<>();
+        String query = "SELECT TOP 8 p.Product_ID, p.Product_Name, p.Price, p.Image, p.Original_Price, "
+                + "p.Discount_Percent, p.Discount_Start_Date, p.Discount_End_Date, t.Trademark_Name "
+                + "FROM Products p "
+                + "JOIN Trademark t ON p.Trademark_ID = t.Trademark_ID "
+                + "WHERE p.Discount_Percent > 0 "
+                + // Chỉ lấy sản phẩm có giảm giá
+                "ORDER BY p.Discount_Percent DESC"; // Sắp xếp giảm dần theo phần trăm giảm giá
+
+        try ( Connection conn = new DBContext().getConnection();  PreparedStatement stmt = conn.prepareStatement(query);  ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Product p = new Product(
+                        rs.getInt("Product_ID"),
+                        rs.getString("Trademark_Name"),
+                        rs.getString("Product_Name"),
+                        rs.getDouble("Price"),
+                        0, // Không lấy Quantity từ bảng Products
+                        "", // Không cần Size
+                        "", // Không cần Description
+                        rs.getString("Image"),
+                        0, // Không lấy Rate
+                        "" // Không cần Type
+                );
+                p.setOriginalPrice(rs.getDouble("Original_Price"));
+                p.setDiscountPercent(rs.getDouble("Discount_Percent"));
+                p.setDiscountStartDate(rs.getDate("Discount_Start_Date"));
+                p.setDiscountEndDate(rs.getDate("Discount_End_Date"));
+                hotSellProducts.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return hotSellProducts;
+    }
+
     public boolean updateProductDiscount(Product product) {
         String sql = "UPDATE Products SET "
                 + "Discount_Percent = ?, "
@@ -529,30 +583,29 @@ public class ProductDAO {
                 && now.before(product.getDiscountEndDate());
     }
 
-   public boolean insertProduct(Product product) {
-    String sql = "INSERT INTO Products (Trademark_ID, Product_Name, Price, Quantity, Size, Description, Image, Rate, Type) " +
-                 "VALUES ((SELECT Trademark_ID FROM Trademark WHERE Trademark_Name = ?), ?, ?, ?, ?, ?, ?, ?, ?)";
-    try (Connection conn = new DBContext().getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
+    public boolean insertProduct(Product product) {
+        String sql = "INSERT INTO Products (Trademark_ID, Product_Name, Price, Quantity, Size, Description, Image, Rate, Type) "
+                + "VALUES ((SELECT Trademark_ID FROM Trademark WHERE Trademark_Name = ?), ?, ?, ?, ?, ?, ?, ?, ?)";
+        try ( Connection conn = new DBContext().getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        ps.setString(1, product.getBrand());
-        ps.setString(2, product.getProduct_Name());
-        ps.setDouble(3, product.getPrice());
-        ps.setInt(4, product.getQuantity());
-        ps.setString(5, product.getSize());
-        ps.setString(6, product.getDescription());
-        ps.setString(7, product.getImage());
-        ps.setDouble(8, product.getRate());
-        ps.setString(9, product.getType());
+            ps.setString(1, product.getBrand());
+            ps.setString(2, product.getProduct_Name());
+            ps.setDouble(3, product.getPrice());
+            ps.setInt(4, product.getQuantity());
+            ps.setString(5, product.getSize());
+            ps.setString(6, product.getDescription());
+            ps.setString(7, product.getImage());
+            ps.setDouble(8, product.getRate());
+            ps.setString(9, product.getType());
 
-        int rowsAffected = ps.executeUpdate();
-        return rowsAffected > 0;
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
 
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
-}
 
     public boolean updateProduct(Product product) {
         String query = "UPDATE Products SET "

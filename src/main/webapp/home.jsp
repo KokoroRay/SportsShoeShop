@@ -1,9 +1,3 @@
-<%-- 
-    Document   : home
-    Created on : Oct 20, 2024, 7:13:25 PM
-    Author     : ADMIN
---%>
-
 <%@page import="dao.FavoriteDAO"%>
 <%@page import="java.util.List"%>
 <%@page import="model.Product"%>
@@ -19,6 +13,7 @@
     List<Product> productList = productDAO.getAllProducts();
 
     List<Product> bestsellerList = productDAO.getBestsellerProducts();
+    List<Product> hotSellList = productDAO.getHotSellProducts();
 %>
 <!DOCTYPE html>
 <html>
@@ -42,9 +37,9 @@
                 width: calc(200%);
                 animation: scroll 20s linear infinite;
             }
-              .slider-track:hover {
-                  animation-play-state: paused;
-              }
+            .slider-track:hover {
+                animation-play-state: paused;
+            }
             .bestseller-card {
                 flex: 0 0 auto;
                 width: 300px;  /* Tăng chiều rộng card */
@@ -192,9 +187,11 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="orderStatus.jsp"> order status <i class=" "></i>
+                            <a class="nav-link active" aria-current="page" href="orderStatus.jsp">
+                                <i class="fa fa-list-alt"></i>
                             </a>
                         </li>
+
 
                         <% }%>
                     </ul>
@@ -364,6 +361,55 @@
                 </div>
             </div>
         </div>
+
+        <!-- Phần Hot Sell -->
+        <div class="container mt-5">
+            <h3 class="text-center mb-4" style="color: red; font-weight: bold; font-size: 2rem;">🔥 Hot Sell 🔥</h3>
+            <div class="bestseller-slider">
+                <div class="slider-track">
+                    <% if (hotSellList != null && !hotSellList.isEmpty()) {
+                            for (Product p : hotSellList) {
+                                boolean isDiscountActive = productDAO.isDiscountActive(p);
+                    %>
+                    <a href="product_detail.jsp?productId=<%= p.getProduct_ID()%>" class="text-decoration-none">
+                        <div class="card bestseller-card">
+                            <!-- Badge giảm giá -->
+                            <% if (isDiscountActive) {%>
+                            <div class="discount-badge bg-danger text-white p-1 rounded">
+                                -<%= Math.round(p.getDiscountPercent())%>%
+                            </div>
+                            <% }%>
+
+                            <img src="<%= p.getImage()%>" class="card-img-top" alt="<%= p.getProduct_Name()%>">
+                            <div class="card-body p-2">
+                                <h6 class="card-title text-center mb-2"><%= p.getProduct_Name()%></h6>
+                                <div class="price text-center">
+                                    <% if (isDiscountActive && p.getOriginalPrice() > 0) {%>
+                                    <span class="original-price text-muted text-decoration-line-through me-2">
+                                        $<%= String.format("%.2f", p.getOriginalPrice())%>
+                                    </span>
+                                    <span class="discounted-price text-danger fw-bold">
+                                        $<%= String.format("%.2f", productDAO.getDiscountedPrice(p))%>
+                                    </span>
+                                    <% } else {%>
+                                    <span class="current-price fw-bold">
+                                        $<%= String.format("%.2f", p.getPrice())%>
+                                    </span>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <% }
+            } else { %>
+                    <div class="col-12">
+                        <div class="alert alert-info text-center">No hot sell products found.</div>
+                    </div>
+                    <% }%>
+                </div>
+            </div>
+        </div>
+
 
 
         <div class="footer">

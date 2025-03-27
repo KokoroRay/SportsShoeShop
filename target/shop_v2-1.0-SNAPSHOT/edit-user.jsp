@@ -1,8 +1,3 @@
-<%-- 
-    Document   : edit-user
-    Created on : Oct 30, 2024, 9:59:52 AM
-    Author     : Tobi
---%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.User"%>
 <%@page import="dao.UserDAO"%>

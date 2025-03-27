@@ -102,7 +102,7 @@
 
                 </div>
                 <div class="team-member">
-                    <h3>Hồ Gia Bảo</h3>            
+                    <h3>Lâm Gia Bảo</h3>            
                     
                 </div>
                 <div class="team-member">

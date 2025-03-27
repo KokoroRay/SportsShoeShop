@@ -164,6 +164,32 @@ public class OrderDAO {
         return orderItems;
     }
 
+    public List<Order> getPendingOrdersByUserId(int userId) {
+        List<Order> orders = new ArrayList<>();
+        String query = "SELECT * FROM Orders WHERE User_ID = ? AND Status = 'pending' ORDER BY Order_Date DESC";
+
+        try ( Connection conn = dbContext.getConnection();  PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, userId);
+
+            try ( ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Order order = new Order(
+                            rs.getInt("Order_ID"),
+                            rs.getInt("User_ID"),
+                            rs.getTimestamp("Order_Date"),
+                            rs.getDouble("Total_Price"),
+                            rs.getString("Status")
+                    );
+                    orders.add(order);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
+
     public Order getOrderById(int orderId) {
         Order order = null;
         String orderQuery = "SELECT * FROM Orders WHERE Order_ID = ?";
