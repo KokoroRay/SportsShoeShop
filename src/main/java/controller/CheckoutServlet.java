@@ -1,8 +1,9 @@
 package controller;
 
+import dao.NotificationDAO;
+import dao.OrderDAO;
 import model.CartItem;
 import model.User;
-import dao.OrderDAO;
 import utils.EmailUtil;
 
 import jakarta.servlet.ServletException;
@@ -10,9 +11,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
+import model.Notification;
 
 @WebServlet("/CheckoutServlet")
 public class CheckoutServlet extends HttpServlet {
+
+    private OrderDAO orderDAO = new OrderDAO();
+    private NotificationDAO notificationDAO = new NotificationDAO();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -26,58 +31,90 @@ public class CheckoutServlet extends HttpServlet {
             return;
         }
 
-        // Lấy thông tin địa chỉ và phương thức thanh toán
         String fullName = request.getParameter("fullName");
         String phoneNumber = request.getParameter("phoneNumber");
         String address = request.getParameter("address");
         String paymentMethod = request.getParameter("paymentMethod");
 
-        double total = 0;
-        for (CartItem item : cart) {
-            total += item.getTotalPrice();
-        }
+        double totalPrice = cart.stream().mapToDouble(CartItem::getTotalPrice).sum();
 
-        OrderDAO orderDAO = new OrderDAO();
-        boolean orderSaved = orderDAO.saveOrder(user, cart, total);
+        boolean orderSaved = orderDAO.saveOrder(user, cart, totalPrice);
 
         if (orderSaved) {
             session.removeAttribute("cart");
 
-            // Gửi email xác nhận
-            String toEmail = user.getEmail();
-            String subject = "Order Confirmation - Group 7 Shop";
-            String messageContent = buildOrderConfirmationMessage(user, fullName, phoneNumber, address, paymentMethod, cart, total);
-            EmailUtil.sendEmail(toEmail, subject, messageContent);
+            int orderId = orderDAO.getLastOrderId(user.getUserId());
 
-            response.sendRedirect("order-confirmation.jsp");
+            String orderDetails = "";
+            for (CartItem item : cart) {
+                orderDetails += item.getProduct_Name() + " (Size: " + item.getSize() + ", Quantity: " + item.getQuantity() + "): $" + item.getTotalPrice() + "\n";
+            }
+
+            boolean notificationCreated = notificationDAO.createNotification(
+                    orderId, user.getUserId(), "New order #" + orderId + " awaiting confirmation.", "pending",
+                    fullName, phoneNumber, address, paymentMethod, orderDetails, totalPrice
+            );
+
+// Kiểm tra xem có lưu thành công không
+            if (!notificationCreated) {
+                response.sendRedirect("viewcart.jsp?error=Failed to save order notification");
+                return;
+            }
+
+            response.sendRedirect("orderStatus.jsp");
         } else {
             response.sendRedirect("viewcart.jsp?error=payment_failed");
         }
     }
 
-    private String buildOrderConfirmationMessage(User user, String fullName, String phoneNumber, String address, String paymentMethod, List<CartItem> cart, double total) {
-        StringBuilder message = new StringBuilder();
-        message.append("Hello ").append(fullName).append(",\n\n");
-        message.append("Thank you for your order! Here are your order details:\n\n");
-        
-        message.append("Shipping Information:\n");
-        message.append("- Name: ").append(fullName).append("\n");
-        message.append("- Phone: ").append(phoneNumber).append("\n");
-        message.append("- Address: ").append(address).append("\n");
-        message.append("- Payment Method: ").append(paymentMethod).append("\n\n");
-        
-        message.append("Order Details:\n");
-        for (CartItem item : cart) {
-            message.append("- ").append(item.getProduct_Name())
-                   .append(" (Size: ").append(item.getSize())
-                   .append(", Quantity: ").append(item.getQuantity())
-                   .append("): $").append(item.getTotalPrice()).append("\n");
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        if ("sendEmail".equals(request.getParameter("action"))) {
+            try {
+                int notificationId = Integer.parseInt(request.getParameter("notificationId"));
+                Notification notification = notificationDAO.getNotificationById(notificationId);
+
+                if (notification != null) {
+                    User user = notificationDAO.getUserByNotificationId(notificationId);
+                    if (user != null) {
+                        String emailContent = buildOrderConfirmationMessage(notification);
+
+                        // Gọi hàm sendEmail (void)
+                        EmailUtil.sendEmail(user.getEmail(), "Order Confirmed - Group 7 Shop", emailContent);
+
+                        // Luôn redirect về trang manage-orders.jsp và hiển thị thông báo thành công
+                        response.sendRedirect(request.getContextPath() + "/manage-orders.jsp?success=Email sent");
+                    } else {
+                        response.sendRedirect(request.getContextPath() + "/manage-orders.jsp?error=User not found");
+                    }
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/manage-orders.jsp?error=Notification not found");
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                response.sendRedirect(request.getContextPath() + "/manage-orders.jsp?error=Invalid notification ID");
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.sendRedirect(request.getContextPath() + "/manage-orders.jsp?error=Unexpected error");
+            }
         }
-        
-        message.append("\nTotal Amount: $").append(total).append("\n\n");
+    }
+
+    private String buildOrderConfirmationMessage(Notification notification) {
+        StringBuilder message = new StringBuilder();
+        message.append("Hello ").append(notification.getFullName()).append(",\n\n");
+        message.append("Thank you for your order! Here are your order details:\n\n");
+        message.append("Shipping Information:\n");
+        message.append("- Name: ").append(notification.getFullName()).append("\n");
+        message.append("- Phone: ").append(notification.getPhoneNumber()).append("\n");
+        message.append("- Address: ").append(notification.getAddress()).append("\n");
+        message.append("- Payment Method: ").append(notification.getPaymentMethod()).append("\n\n");
+        message.append("Order Details:\n").append(notification.getOrderDetails()).append("\n");
+        message.append("Total Amount: $").append(notification.getTotalPrice()).append("\n\n");
         message.append("Your order will be processed and shipped soon.\n");
         message.append("Thank you for shopping with us!\n");
-        
         return message.toString();
     }
 }

@@ -1,9 +1,3 @@
-<%-- 
-    Document   : home
-    Created on : Oct 20, 2024, 7:13:25 PM
-    Author     : ADMIN
---%>
-
 <%@page import="dao.FavoriteDAO"%>
 <%@page import="model.User"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -14,6 +8,7 @@
 <%
     // Retrieve user info from session
     User user = (User) session.getAttribute("user");
+
     // Fetch the list of products from the database
     ProductDAO productDAO = new ProductDAO();
     List<Product> productList = productDAO.getAllProducts();
@@ -121,6 +116,7 @@
                                 <li><a class="dropdown-item" href="mizuno.jsp">Mizuno</a></li>
                                 <li><a class="dropdown-item" href="joma.jsp">Joma</a></li>
                                 <li><a class="dropdown-item" href="kamito.jsp">Kamito</a></li>
+                                <li><a class="dropdown-item" href="other.jsp">Other</a></li>
                             </ul>
                         </li>
                         <li class="nav-item mx-3">
@@ -159,8 +155,31 @@
                             </div>
                             <div class="product-info text-center">
                                 <h5>${product.getProduct_Name()} - ${product.getDescription()}</h5>
-                                <div class="product-price">
-                                    <span class="current-price">${product.getPrice()}$</span>
+                                <div class="product-price text-center">
+                                    <%
+                                        Product product = (Product) pageContext.getAttribute("product");
+                                        boolean isDiscountActive = productDAO.isDiscountActive(product);
+                                    %>
+
+                                    <% if (isDiscountActive) {%>
+                                    <!-- Giá khuyến mãi -->
+                                    <span class="text-danger fw-bold">
+                                        $<%= String.format("%.2f", productDAO.getDiscountedPrice(product))%>
+                                    </span>
+                                    <!-- Giá gốc (gạch ngang) -->
+                                    <small class="text-muted text-decoration-line-through d-block">
+                                        $<%= String.format("%.2f", product.getOriginalPrice())%>
+                                    </small>
+                                    <!-- Badge % giảm giá -->
+                                    <span class="badge bg-danger mt-1">
+                                        -<%= product.getDiscountPercent()%>%
+                                    </span>
+                                    <% } else {%>
+                                    <!-- Giá thường -->
+                                    <span class="current-price">
+                                        $<%= String.format("%.2f", product.getPrice())%>
+                                    </span>
+                                    <% }%>
                                 </div>
                             </div>
                         </a>
@@ -171,7 +190,7 @@
 
 
         <!-- footer -->
-       <div class="footer">
+        <div class="footer">
             <footer>
                 <div class="footer-container">
                     <!-- Về chúng tôi -->

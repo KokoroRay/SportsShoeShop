@@ -8,10 +8,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBContext { 
-    private final String url = "jdbc:sqlserver://localhost:1433;databaseName=group5";
+public class DBContext {
+    private final String url = "jdbc:sqlserver://localhost:1433;databaseName=group7";
     private final String user = "sa";
-    private final String password = "123";
+    private final String password = "0123456789";
 
     public Connection getConnection() throws SQLException {
         try {

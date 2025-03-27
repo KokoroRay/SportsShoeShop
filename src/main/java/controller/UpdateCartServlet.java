@@ -13,38 +13,33 @@ public class UpdateCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         HttpSession session = request.getSession();
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
 
-        // Nhận dữ liệu từ request
-        String productIdStr = request.getParameter("productId");
-        String newSize = request.getParameter("size");
-        String quantityStr = request.getParameter("quantity");
+        try {
+            // Đọc và parse tham số
+            int productId = Integer.parseInt(request.getParameter("productId"));
+            String size = request.getParameter("size");
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
 
-        // Kiểm tra dữ liệu hợp lệ
-        if (productIdStr == null || productIdStr.isEmpty()
-                || newSize == null || newSize.isEmpty()
-                || quantityStr == null || quantityStr.isEmpty()) {
-            response.sendRedirect("viewcart.jsp?error=invalid_input");
-            return;
-        }
-
-        int productId = Integer.parseInt(productIdStr);
-        int newQuantity = Integer.parseInt(quantityStr);
-
-        // Cập nhật giỏ hàng
-        if (cart != null) {
-            for (CartItem item : cart) {
-                if (item.getProduct_Id() == productId) {
-                    item.setSize(newSize); // Cập nhật size
-                    item.setQuantity(newQuantity); // Cập nhật số lượng
-                    break;
+            // Cập nhật giỏ hàng
+            if (cart != null) {
+                for (CartItem item : cart) {
+                    if (item.getProduct_Id() == productId && item.getSize().equals(size)) {
+                        item.setQuantity(quantity);
+                        break;
+                    }
                 }
             }
-        }
 
-        // Lưu lại giỏ hàng vào session
-        session.setAttribute("cart", cart);
-        response.sendRedirect("viewcart.jsp");
+            // Tính lại tổng tiền
+            double subtotal = cart.stream().mapToDouble(CartItem::getTotalPrice).sum();
+            session.setAttribute("subtotal", subtotal);
+
+            response.setStatus(HttpServletResponse.SC_OK);
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Dữ liệu không hợp lệ");
+        }
     }
 }

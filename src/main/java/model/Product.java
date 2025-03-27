@@ -4,9 +4,12 @@
  */
 package model;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 /**
  *
- * @author ADMIN
+ * @author NguyenMinhTam CE181522
  */
 public class Product {
 
@@ -20,6 +23,11 @@ public class Product {
     private String Image;
     private double Rate;
     private String Type;
+    private double originalPrice;
+    private double discountPercent;
+    private Date discountStartDate;
+    private Date discountEndDate;
+    private int favoriteCount;
 
     public Product() {
     }
@@ -117,9 +125,6 @@ public class Product {
         this.Rate = Rate;
     }
 
-    private int favoriteCount;
-
-    // Thêm getter/setter
     public int getFavoriteCount() {
         return favoriteCount;
     }
@@ -128,8 +133,52 @@ public class Product {
         this.favoriteCount = favoriteCount;
     }
 
+    public double getOriginalPrice() {
+        return originalPrice;
+    }
+
+    public void setOriginalPrice(double originalPrice) {
+        this.originalPrice = originalPrice;
+    }
+
+    public double getDiscountPercent() {
+        return discountPercent;
+    }
+
+    public void setDiscountPercent(double discountPercent) {
+        this.discountPercent = discountPercent;
+    }
+
+    public Date getDiscountStartDate() {
+        return discountStartDate;
+    }
+
+    public void setDiscountStartDate(Date discountStartDate) {
+        this.discountStartDate = discountStartDate;
+    }
+
+    public Date getDiscountEndDate() {
+        return discountEndDate;
+    }
+
+    public void setDiscountEndDate(Date discountEndDate) {
+        this.discountEndDate = discountEndDate;
+    }
+
     public void setString(String string) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public long getRemainingDiscountDays() {
+        if (discountStartDate == null || discountEndDate == null) {
+            return -1;
+        }
+        Date now = new Date();
+        if (now.before(discountStartDate) || now.after(discountEndDate)) {
+            return -1;
+        }
+        long diff = discountEndDate.getTime() - now.getTime();
+        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 
 }

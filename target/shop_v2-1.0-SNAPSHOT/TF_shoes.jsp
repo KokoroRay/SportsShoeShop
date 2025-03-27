@@ -1,9 +1,3 @@
-<%-- 
-    Document   : home
-    Created on : Oct 20, 2024, 7:13:25 PM
-    Author     : ADMIN
---%>
-
 <%@page import="dao.FavoriteDAO"%>
 <%@page import="model.User"%>
 <%@page import="java.util.*"%>
@@ -99,10 +93,11 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="nike.jsp">Nike</a></li>
                                 <li><a class="dropdown-item" href="adidas.jsp">Adidas</a></li>
-                                <li><a class="dropdown-item" href="#">Puma</a></li>
+                                <li><a class="dropdown-item" href="puma.jsp">Puma</a></li>
                                 <li><a class="dropdown-item" href="mizuno.jsp">Mizuno</a></li>
-                                <li><a class="dropdown-item" href="#">Joma</a></li>
-                                <li><a class="dropdown-item" href="#">Kamito</a></li>
+                                <li><a class="dropdown-item" href="joma.jsp">Joma</a></li>
+                                <li><a class="dropdown-item" href="kamito.jsp">Kamito</a></li>
+                                <li><a class="dropdown-item" href="other.jsp">Other</a></li>
                             </ul>
                         </li>
                         <li class="nav-item mx-3">
@@ -131,7 +126,7 @@
                             <p class="card-text"><%= p.getDescription()%></p>
                             <p class="card-text text-danger">Price: <%= p.getPrice()%>$</p>
                             <a href="DetailController?productId=<%= p.getProduct_ID()%>" class="btn btn-primary">View Details</a>
-                           
+
                         </div>
                     </div>
                 </div>
@@ -143,7 +138,7 @@
 
 
         <!-- footer -->
-<div class="footer">
+        <div class="footer">
             <footer>
                 <div class="footer-container">
                     <!-- Về chúng tôi -->

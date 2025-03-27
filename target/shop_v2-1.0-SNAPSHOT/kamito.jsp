@@ -1,9 +1,3 @@
-<%-- 
-    Document   : home
-    Created on : Oct 20, 2024, 7:13:25 PM
-    Author     : ADMIN
---%>
-
 <%@page import="dao.FavoriteDAO"%>
 <%@page import="model.User"%>
 <%@page import="java.util.List"%>
@@ -99,7 +93,8 @@
                                 <li><a class="dropdown-item" href="puma.jsp">Puma</a></li>
                                 <li><a class="dropdown-item" href="mizuno.jsp">Mizuno</a></li>
                                 <li><a class="dropdown-item" href="joma.jsp">Joma</a></li>
-                                <li><a class="dropdown-item" href="kamito.jsp"  style="color: red">Kamito</a></li>
+                                <li><a class="dropdown-item" href="kamito.jsp"style="color: red">Kamito</a></li>
+                                <li><a class="dropdown-item" href="other.jsp">Other</a></li>
                             </ul>
                         </li>
                         <li class="nav-item mx-3">

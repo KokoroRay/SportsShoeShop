@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="model.Product, dao.ProductDAO, model.User" %>
 <%@ page import="java.util.List" %>
@@ -69,6 +70,33 @@
             .navbar-nav {
                 gap: 10px; /* Adds even spacing between all items */
             }
+            /*anh san pham*/
+            .card-img-top {
+                height: 280px !important; /* Tăng từ 200px lên 280px */
+                width: 100%;
+                object-fit: contain; /* Hiển thị toàn bộ ảnh không crop */
+                padding: 15px; /* Thêm khoảng trắng xung quanh ảnh */
+                background: #f8f9fa; /* Nền cho sản phẩm không có ảnh */
+                border-radius: 10px 10px 0 0;
+            }
+
+            .card {
+                transition: all 0.3s;
+                border: 1px solid #eee !important; /* Thêm viền cho card */
+            }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+
+            /* Responsive cho mobile */
+            @media (max-width: 768px) {
+                .card-img-top {
+                    height: 200px !important;
+                    padding: 10px;
+                }
+            }
 
             /* Product Detail Style */
             .product-detail {
@@ -114,19 +142,112 @@
                 color: #fff;
                 padding: 2rem 0;
                 text-align: center;
-                margin-top: 2rem;
+                width: 100vw;
+                margin-left: calc(-50vw + 50%);
+                margin-top: 4rem;
             }
-            .footer a {
-                color: #f4a261;
-                text-decoration: none;
-                transition: color 0.3s;
+
+            .footer-container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 15px;
             }
-            .footer a:hover {
-                color: #e76f51;
+
+            /* Sửa products container */
+            .best-selling-container,
+            .brand-products-container {
+                display: flex;
+                overflow-x: auto;
+                scroll-behavior: smooth;
+                padding-bottom: 16px;
+                gap: 16px;
+                -ms-overflow-style: none;  /* IE and Edge */
+                scrollbar-width: none;  /* Firefox */
             }
-            .footer-bottom {
-                font-size: 0.9rem;
-                margin-top: 1rem;
+
+            .best-selling-container::-webkit-scrollbar,
+            .brand-products-container::-webkit-scrollbar {
+                display: none;
+            }
+
+            /* Sửa arrow buttons */
+            .arrow-btn {
+                background-color: rgba(0,0,0,0.5) !important;
+                color: white !important;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 2;
+            }
+
+            /* Sửa product card */
+            .product-card {
+                flex: 0 0 calc(25% - 12px);
+                min-width: 280px;
+                transition: transform 0.3s;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                border-radius: 8px;
+                overflow: hidden;
+            }
+
+            /* Responsive adjustments */
+            @media (max-width: 768px) {
+                .product-card {
+                    flex: 0 0 calc(50% - 12px);
+                    min-width: 200px;
+                }
+
+                .arrow-btn {
+                    width: 30px;
+                    height: 30px;
+                    font-size: 18px;
+                }
+            }
+
+            /* Đảm bảo các nút không che khuất sản phẩm */
+            .products-wrapper {
+                display: flex;
+                align-items: center;
+            }
+
+            #products-container {
+                flex: 1;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            /* Cải thiện cách căn chỉnh các nút */
+            .btn-secondary {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            #prev-btn {
+                left: 10px;
+            }
+
+            #next-btn {
+                right: 10px;
+            }
+            .products-wrapper {
+                position: relative;
+                margin: 0 -15px;
+            }
+
+            .product-card {
+                transition: transform 0.3s;
+            }
+
+            .product-card:hover {
+                transform: translateY(-5px);
+            }
+
+            .brand-products-container::-webkit-scrollbar {
+                display: none; /* Ẩn thanh scroll */
             }
 
         </style>
@@ -196,10 +317,11 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="nike.jsp">Nike</a></li>
                                 <li><a class="dropdown-item" href="adidas.jsp">Adidas</a></li>
-                                <li><a class="dropdown-item" href="#">Puma</a></li>
-                                <li><a class="dropdown-item" href="#">Mizuno</a></li>
-                                <li><a class="dropdown-item" href="#">Joma</a></li>
-                                <li><a class="dropdown-item" href="#">Kamito</a></li>
+                                <li><a class="dropdown-item" href="puma.jsp">Puma</a></li>
+                                <li><a class="dropdown-item" href="mizuno.jsp">Mizuno</a></li>
+                                <li><a class="dropdown-item" href="joma.jsp">Joma</a></li>
+                                <li><a class="dropdown-item" href="kamito.jsp">Kamito</a></li>
+                                <li><a class="dropdown-item" href="other.jsp">Other</a></li>
                             </ul>
                         </li>
                         <li class="nav-item mx-3"><a class="nav-link" href="contact.jsp" style="font-weight: bold;">Contact</a></li>
@@ -218,7 +340,7 @@
                         <img src="<%= product.getImage()%>" alt="<%= product.getProduct_Name()%>" class="img-fluid">
                     </div>
                     <div class="col-md-6">
-                        <h2>Price: $<%= product.getPrice()%></h2>
+<!--                        <h2>Price: $<%= product.getPrice()%></h2>-->
                         <div class="mb-3">
                             <%
                                 if (user != null) {
@@ -244,80 +366,215 @@
                         <p><strong>Description:</strong> <%= product.getDescription()%></p>
                         <p><strong>Rating:</strong> <%= product.getRate()%> ⭐</p>
                         <% if (user == null) { %>
-                        <a href="login.jsp" class="btn btn-success">Log in to purchase</a>
+                        <!-- Hiển thị nút login khi CHƯA đăng nhập -->
+                        <div class="mt-4">
+                            <a href="login.jsp" class="btn btn-success w-100">Log in to purchase</a>
+                        </div>
                         <% } else {%>
+                        <!-- Hiển thị form khi ĐÃ đăng nhập -->
                         <form action="CartServlet" method="post">
                             <input type="hidden" name="productId" value="<%= product.getProduct_ID()%>">
                             <input type="hidden" name="productName" value="<%= product.getProduct_Name()%>">
-                            <input type="hidden" name="price" value="<%= product.getPrice()%>">
-                            <label for="size">Size:</label>
-                            <select name="size" class="form-select" required>
-                                <% if (availableSizes != null && !availableSizes.isEmpty()) {
-                                        for (String size : availableSizes) {
-                                            String cleanedSize = size.trim();%>
-                                <option value="<%= cleanedSize%>"><%= cleanedSize%></option>
-                                <% }
-                                } else { %>
-                                <option value="">No sizes available</option>
+
+                            <div class="col-md-6">
+                                <% if (productDAO.isDiscountActive(product)) {%>
+                                <div class="discount-info mb-3">
+                                    <span class="badge bg-danger fs-5">-<%= product.getDiscountPercent()%>%</span>
+                                    <span class="text-muted ms-2">
+                                        End day: <%= new SimpleDateFormat("dd/MM/yyyy").format(product.getDiscountEndDate())%>
+                                    </span>
+                                </div>
                                 <% } %>
-                            </select>
-                            <label for="quantity">Quantity:</label>
-                            <input type="number" name="quantity" min="1" value="1" required>
-                            <button type="submit" class="btn btn-success">Add to Cart</button>
+
+                                <h2>
+                                    <% if (productDAO.isDiscountActive(product)) {%>
+                                    <span class="text-danger">$<%= String.format("%.2f", productDAO.getDiscountedPrice(product))%></span>
+                                    <small class="text-muted text-decoration-line-through ms-2">$<%= product.getOriginalPrice()%></small>
+                                    <% } else {%>
+                                    $<%= product.getPrice()%>
+                                    <% }%>
+                                </h2>
+                            </div>
+
+                            <input type="hidden" name="price" value="<%= product.getPrice()%>">
+
+                            <div class="mb-3">
+                                <label for="size" class="form-label">Size:</label>
+                                <select name="size" class="form-select" required>
+                                    <% if (availableSizes != null && !availableSizes.isEmpty()) {
+                                            for (String size : availableSizes) {
+                                                String cleanedSize = size.trim();%>
+                                    <option value="<%= cleanedSize%>"><%= cleanedSize%></option>
+                                    <% }
+                                    } else { %>
+                                    <option value="">No sizes available</option>
+                                    <% } %>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="quantity" class="form-label">Quantity:</label>
+                                <input type="number" name="quantity" 
+                                       class="form-control" 
+                                       min="1" 
+                                       value="1" 
+                                       required>
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100">Add to Cart</button>
                         </form>
                         <% } %>
                     </div>
                 </div>
             </div>
 
+            <!-- Best Selling Products Section -->
             <div class="container mt-5">
                 <h3 class="text-center">Best Selling Products</h3>
-                <div class="row">
-                    <% for (Product p : bestSellingProducts) {%>
-                    <div class="col-md-3">
-                        <div class="card mb-4">
-                            <img src="<%= p.getImage()%>" class="card-img-top" alt="<%= p.getProduct_Name()%>">
-                            <div class="card-body">
-                                <h5 class="card-title"><%= p.getProduct_Name()%></h5>
-                                <p class="card-text">$<%= p.getPrice()%></p>
-                                <a href="productDetail.jsp?productId=<%= p.getProduct_ID()%>" class="btn btn-primary">View Details</a>
+                <!-- Wrapper for products -->
+                <div class="products-wrapper" style="position: relative;">
+                    <!-- Left Arrow Button -->
+                    <button id="prev-btn" class="btn btn-secondary btn-sm arrow-btn" onclick="navigateProducts(-1)" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); z-index: 10;">
+                        &#8592;
+                    </button>
+
+                    <div id="products-container" style="display: flex; gap: 16px;">
+                        <%
+                            if (bestSellingProducts != null && !bestSellingProducts.isEmpty()) {
+                                int counter = 0; // Thêm biến đếm
+                                for (Product p : bestSellingProducts) {
+                        %>
+                        <div class="product-card" data-index="<%= counter%>" style="flex: 0 0 calc(25% - 12px); min-width: 280px; display: <%= counter < 4 ? "block" : "none"%>;">
+                            <div class="card h-100">
+                                <img src="<%= p.getImage()%>" 
+                                     class="card-img-top" 
+                                     alt="<%= p.getProduct_Name()%>"
+                                     style="height: 200px; object-fit: cover;">
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= p.getProduct_Name()%></h5>
+                                    <p class="card-text text-danger fw-bold">
+                                        $<%= String.format("%.2f", p.getPrice())%>
+                                    </p>
+                                    <a href="product_detail.jsp?productId=<%= p.getProduct_ID()%>" 
+                                       class="btn btn-primary btn-sm">View Details</a>
+                                </div>
                             </div>
                         </div>
+                        <%
+                                counter++;
+                            }
+                        } else {
+                        %>
+                        <div class="col-12 text-center">
+                            <div class="alert alert-info">No best-selling products found.</div>
+                        </div>
+                        <% }%>
                     </div>
-                    <% }%>
+
+                    <!-- Right Arrow Button -->
+                    <button id="next-btn" class="btn btn-secondary btn-sm arrow-btn" onclick="navigateProducts(1)" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); z-index: 10;">
+                        &#8594;
+                    </button>
                 </div>
             </div>
+
+
 
             <div class="container mt-5">
                 <h3 class="text-center">More from <%= product.getBrand()%></h3>
-                <div class="row">
-                    <% for (Product p : brandProducts) {%>
-                    <div class="col-md-3">
-                        <div class="card mb-4">
-                            <img src="<%= p.getImage()%>" class="card-img-top" alt="<%= p.getProduct_Name()%>">
-                            <div class="card-body">
-                                <h5 class="card-title"><%= p.getProduct_Name()%></h5>
-                                <p class="card-text">$<%= p.getPrice()%></p>
-                                <a href="productDetail.jsp?productId=<%= p.getProduct_ID()%>" class="btn btn-primary">View Details</a>
+                <div class="products-wrapper" style="position: relative;">
+                    <button class="btn btn-secondary btn-sm arrow-btn" onclick="navigateBrandProducts(-1)" style="position: absolute; left: 10px; z-index: 1;">
+                        &#8592;
+                    </button>
+
+                    <div class="brand-products-container" style="
+                         display: flex;
+                         overflow-x: auto;
+                         scroll-behavior: smooth;
+                         padding-bottom: 16px;
+                         gap: 16px;
+                         ">
+                        <% for (Product p : brandProducts) {%>
+                        <div class="product-card" style="flex: 0 0 calc(25% - 12px); min-width: 280px;">
+                            <div class="card h-100">
+                                <img src="<%= p.getImage()%>" 
+                                     class="card-img-top" 
+                                     alt="<%= p.getProduct_Name()%>"
+                                     style="height: 200px; object-fit: cover;">
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= p.getProduct_Name()%></h5>
+                                    <p class="card-text text-danger fw-bold">
+                                        $<%= String.format("%.2f", p.getPrice())%>
+                                    </p>
+                                    <a href="product_detail.jsp?productId=<%= p.getProduct_ID()%>" 
+                                       class="btn btn-primary btn-sm">View Details</a>
+                                </div>
                             </div>
                         </div>
+                        <% }%>
                     </div>
-                    <% }%>
+
+                    <button class="btn btn-secondary btn-sm arrow-btn" onclick="navigateBrandProducts(1)" style="position: absolute; right: 10px; z-index: 1;">
+                        &#8594;
+                    </button>
                 </div>
             </div>
-        </div>
 
-        <div class="footer mt-4">
-            <footer>
-                <div class="footer-container">
-                    <p>&copy; 2025 Shoe Shop. All rights reserved.</p>
-                    <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a>
-                </div>
-                <div class="footer-bottom">
-                    <p>&copy; 2025 Shoe Shop. All rights reserved.</p>
-                </div>
-            </footer>
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+            <div class="footer mt-4">
+                <footer>
+                    <div class="footer-container">
+                        <p>&copy; 2025 Shoe Shop. All rights reserved.</p>
+                        <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a>
+                    </div>
+                    <div class="footer-bottom">
+                        <p>&copy; 2025 Shoe Shop. All rights reserved.</p>
+                    </div>
+                </footer>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+            <script>
+                        // Best Selling Products
+                        let bestSellingIndex = 0;
+                        const bestSellingCards = document.querySelectorAll('#products-container .product-card');
+                        const totalBestSelling = bestSellingCards.length;
+
+                        // Function to navigate Best Selling Products
+                        function navigateProducts(direction) {
+                            const itemsToShow = 4; // Number of items to show at a time
+                            bestSellingIndex = Math.max(0, Math.min(bestSellingIndex + direction, totalBestSelling - itemsToShow));
+
+                            // Hide all product cards
+                            bestSellingCards.forEach(card => {
+                                card.style.display = 'none';
+                            });
+
+                            // Show products from currentIndex to currentIndex + itemsToShow
+                            for (let i = bestSellingIndex; i < bestSellingIndex + itemsToShow && i < totalBestSelling; i++) {
+                                bestSellingCards[i].style.display = 'block';
+                            }
+                        }
+
+                        // More from Brand Products
+                        let brandIndex = 0;
+                        const brandCards = document.querySelectorAll('.brand-products-container .product-card');
+                        const totalBrand = brandCards.length;
+
+                        // Function to navigate More from Brand Products
+                        function navigateBrandProducts(direction) {
+                            const itemsToShow = 4; // Number of items to show at a time
+                            brandIndex = Math.max(0, Math.min(brandIndex + direction, totalBrand - itemsToShow));
+
+                            // Hide all product cards
+                            brandCards.forEach(card => {
+                                card.style.display = 'none';
+                            });
+
+                            // Show products from brandIndex to brandIndex + itemsToShow
+                            for (let i = brandIndex; i < brandIndex + itemsToShow && i < totalBrand; i++) {
+                                brandCards[i].style.display = 'block';
+                            }
+                        }
+
+            </script>
     </body>
 </html>
