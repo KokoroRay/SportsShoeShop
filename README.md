@@ -20,14 +20,6 @@
       <li>Xu hướng mua sắm theo khu vực</li>
     </ul>
   </div>
-  <div>
-    <h4>⚙️ Quản Lý Tích Hợp</h4>
-    <ul>
-      <li>Auto-sync tồn kho</li>
-      <li>Push notification cho đơn hàng mới</li>
-      <li>Xuất báo cáo Excel/PDF</li>
-    </ul>
-  </div>
 </div>
 
 ---
