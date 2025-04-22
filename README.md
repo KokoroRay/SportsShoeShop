@@ -93,6 +93,11 @@ _trang hiểu thị chi tiết thông tin sản phẩm để người dùng mua 
 ![orderStutes](img/user/orderStutes.png)
 _hiểu thị trang thái đơn hàng sau khi người dùng đặt hàng thành công, trước khi đơn hàng được xác nhận người dùng có thể sửa hoặc xóa đơn hàng_
 
+### Sơ đồ cơ sở dữ liệu của dự án
+
+![DB](img/admin/DB.png)
+_sơ đồ cơ sở dữ liệu của dự án_
+
 Và còn một số chức năng khác của trang web, cũng như một số tính năng dẫn đang phát triển
 
 ---
